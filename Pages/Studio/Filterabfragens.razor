@@ -1,0 +1,125 @@
+@page "/filterabfragens"
+
+<PageTitle>Filterabfragens</PageTitle>
+<div class="row" style="margin-bottom: 1rem">
+    <div class="col-12 col-md-6">
+        <RadzenText Text="Filterabfragens" TextStyle="TextStyle.H3" TagName="TagName.H1" style="margin: 0" />
+    </div>
+    <div class="col-12 col-md-6 justify-content-start justify-content-md-end" style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem">
+    <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@AddButtonClick" Variant="Variant.Flat" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <RadzenDataGrid @ref="grid0" ColumnWidth="200px"  AllowFiltering="true" FilterMode="FilterMode.Advanced" AllowPaging="true" AllowSorting="true"
+            Data="@filterabfragens"   RowUpdate=@GridRowUpdate RowCreate=@GridRowCreate TItem="QwTest7.Models.Qusy.Filterabfragen" >
+            <Columns>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Qusy.Filterabfragen" Property="ANWE" Title="ANWE">
+                  <EditTemplate Context="filterabfragen">
+                      <RadzenTextBox style="display: block; width: 100%" @bind-Value="@filterabfragen.ANWE" Name="ANWE" />
+                  </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Qusy.Filterabfragen" Property="FORM" Title="FORM">
+                  <EditTemplate Context="filterabfragen">
+                      <RadzenTextBox style="display: block; width: 100%" @bind-Value="@filterabfragen.FORM" Name="FORM" />
+                      <RadzenRequiredValidator Component="FORM" Text="FORM is required" style="position: absolute" />
+                  </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Qusy.Filterabfragen" Property="NAME" Title="NAME">
+                  <EditTemplate Context="filterabfragen">
+                      <RadzenTextBox style="display: block; width: 100%" @bind-Value="@filterabfragen.NAME" Name="NAME" />
+                      <RadzenRequiredValidator Component="NAME" Text="NAME is required" style="position: absolute" />
+                  </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Qusy.Filterabfragen" Property="FLTRLIST" Title="FLTRLIST">
+                  <EditTemplate Context="filterabfragen">
+                      <RadzenTextBox style="display: block; width: 100%" @bind-Value="@filterabfragen.FLTRLIST" Name="FLTRLIST" />
+                  </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Qusy.Filterabfragen" Property="KEYFIELDS" Title="KEYFIELDS">
+                  <EditTemplate Context="filterabfragen">
+                      <RadzenTextBox style="display: block; width: 100%" @bind-Value="@filterabfragen.KEYFIELDS" Name="KEYFIELDS" />
+                  </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Qusy.Filterabfragen" Property="ISPUBLIC" Title="ISPUBLIC">
+                  <EditTemplate Context="filterabfragen">
+                      <RadzenTextBox style="display: block; width: 100%" @bind-Value="@filterabfragen.ISPUBLIC" Name="ISPUBLIC" />
+                  </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Qusy.Filterabfragen" Property="FLTRID" Title="FLTRID">
+                  <EditTemplate Context="filterabfragen">
+                      <RadzenNumeric style="display: block; width: 100%" @bind-Value="@filterabfragen.FLTRID" Name="FLTRID" />
+                  </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Qusy.Filterabfragen" Property="ERFASSTVON" Title="ERFASSTVON">
+                  <EditTemplate Context="filterabfragen">
+                      <RadzenTextBox style="display: block; width: 100%" @bind-Value="@filterabfragen.ERFASSTVON" Name="ERFASSTVON" />
+                  </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Qusy.Filterabfragen" Property="ERFASSTAM" Title="ERFASSTAM">
+                  <EditTemplate Context="filterabfragen">
+                      <RadzenDatePicker DateFormat="MM/dd/yyyy" style="display: block; width: 100%" @bind-Value="@filterabfragen.ERFASSTAM" Name="ERFASSTAM" />
+                  </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Qusy.Filterabfragen" Property="ERFASSTDATENBANK" Title="ERFASSTDATENBANK">
+                  <EditTemplate Context="filterabfragen">
+                      <RadzenTextBox style="display: block; width: 100%" @bind-Value="@filterabfragen.ERFASSTDATENBANK" Name="ERFASSTDATENBANK" />
+                  </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Qusy.Filterabfragen" Property="GEAENDERTVON" Title="GEAENDERTVON">
+                  <EditTemplate Context="filterabfragen">
+                      <RadzenTextBox style="display: block; width: 100%" @bind-Value="@filterabfragen.GEAENDERTVON" Name="GEAENDERTVON" />
+                  </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Qusy.Filterabfragen" Property="GEAENDERTAM" Title="GEAENDERTAM">
+                  <EditTemplate Context="filterabfragen">
+                      <RadzenDatePicker DateFormat="MM/dd/yyyy" style="display: block; width: 100%" @bind-Value="@filterabfragen.GEAENDERTAM" Name="GEAENDERTAM" />
+                  </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Qusy.Filterabfragen" Property="GEAENDERTDATENBANK" Title="GEAENDERTDATENBANK">
+                  <EditTemplate Context="filterabfragen">
+                      <RadzenTextBox style="display: block; width: 100%" @bind-Value="@filterabfragen.GEAENDERTDATENBANK" Name="GEAENDERTDATENBANK" />
+                  </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Qusy.Filterabfragen" Property="ANZAHLAENDERUNGEN" Title="ANZAHLAENDERUNGEN">
+                  <EditTemplate Context="filterabfragen">
+                      <RadzenNumeric style="display: block; width: 100%" @bind-Value="@filterabfragen.ANZAHLAENDERUNGEN" Name="ANZAHLAENDERUNGEN" />
+                  </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Qusy.Filterabfragen" Property="BEMERKUNG" Title="BEMERKUNG">
+                  <EditTemplate Context="filterabfragen">
+                      <RadzenTextBox style="display: block; width: 100%" @bind-Value="@filterabfragen.BEMERKUNG" Name="BEMERKUNG" />
+                  </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Qusy.Filterabfragen" Property="COLUMNLIST" Title="COLUMNLIST">
+                  <EditTemplate Context="filterabfragen">
+                      <RadzenTextBox style="display: block; width: 100%" @bind-Value="@filterabfragen.COLUMNLIST" Name="COLUMNLIST" />
+                  </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Qusy.Filterabfragen" Property="FORMATLIST" Title="FORMATLIST">
+                  <EditTemplate Context="filterabfragen">
+                      <RadzenTextBox style="display: block; width: 100%" @bind-Value="@filterabfragen.FORMATLIST" Name="FORMATLIST" />
+                  </EditTemplate>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Qusy.Filterabfragen" Filterable="false" Sortable="false" Width="156px" TextAlign="TextAlign.Center">
+                    <EditTemplate Context="filterabfragen">
+                        <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium"
+                            style="margin-top: 0.25rem; margin-right: 0.25rem; margin-bottom: 0.25rem"
+                            Click=@(args => SaveButtonClick(args, filterabfragen)) @onclick:stopPropagation="true" />
+                        <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium"
+                            Click=@(args => CancelButtonClick(args, filterabfragen)) @onclick:stopPropagation="true" />
+                    </EditTemplate>
+                    <Template Context="filterabfragen">
+
+                        <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium"
+                            style="margin-top: 0.25rem; margin-right: 0.25rem; margin-bottom: 0.25rem"
+                            Click=@(args => EditButtonClick(args, filterabfragen)) @onclick:stopPropagation="true" />
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Medium"
+                            Shade="Shade.Lighter" Variant="Variant.Flat"
+                            Click=@(args => GridDeleteButtonClick(args, filterabfragen)) @onclick:stopPropagation="true" />
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </div>
+</div>

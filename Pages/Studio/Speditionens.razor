@@ -1,0 +1,65 @@
+@page "/speditionens"
+
+@attribute [Authorize]
+
+<PageTitle>Speditionens</PageTitle>
+<div class="row" style="margin-bottom: 1rem">
+    <div class="col-12 col-md-6">
+        <RadzenText Text="Speditionens" TextStyle="TextStyle.H3" TagName="TagName.H1" style="margin: 0" />
+    </div>
+    <div class="col-12 col-md-6 justify-content-start justify-content-md-end" style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem">
+    <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@AddButtonClick" Variant="Variant.Flat" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <RadzenDataGrid @ref="grid0" ColumnWidth="200px"  AllowFiltering="true" FilterMode="FilterMode.Advanced" AllowPaging="true" AllowSorting="true"
+            Data="@speditionens"    TItem="QwTest7.Models.Quva.Speditionen" RowSelect="@EditRow" >
+            <Columns>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Speditionen" Property="SPEDID" Title="SPEDID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Speditionen" Property="SPEDNAME" Title="SPEDNAME">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Speditionen" Property="WERKNR" Title="WERKNR">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Speditionen" Property="REPLIKATION" Title="REPLIKATION">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Speditionen" Property="ERFASSTVON" Title="ERFASSTVON">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Speditionen" Property="ERFASSTAM" Title="ERFASSTAM">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Speditionen" Property="ERFASSTDATENBANK" Title="ERFASSTDATENBANK">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Speditionen" Property="GEAENDERTVON" Title="GEAENDERTVON">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Speditionen" Property="GEAENDERTAM" Title="GEAENDERTAM">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Speditionen" Property="GEAENDERTDATENBANK" Title="GEAENDERTDATENBANK">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Speditionen" Property="ANZAHLAENDERUNGEN" Title="ANZAHLAENDERUNGEN">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Speditionen" Property="BEMERKUNG" Title="BEMERKUNG">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Speditionen" Property="NAMELANG" Title="NAMELANG">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Speditionen" Property="KREDITORNR" Title="KREDITORNR">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Speditionen" Property="PALETTENKONTO" Title="PALETTENKONTO">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Speditionen" Property="PALINVDTM" Title="PALINVDTM">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Speditionen" Property="PALINVBSTE" Title="PALINVBSTE">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Speditionen" Property="PALINVBSTD" Title="PALINVBSTD">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Speditionen" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                    <Template Context="speditionen">
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Medium"
+                            Shade="Shade.Lighter" Variant="Variant.Flat"
+                            Click=@(args => GridDeleteButtonClick(args, speditionen)) @onclick:stopPropagation="true" />
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </div>
+</div>

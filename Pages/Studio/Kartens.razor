@@ -1,0 +1,118 @@
+@page "/kartens"
+@attribute [Authorize]
+
+<PageTitle>Kartens</PageTitle>
+<div class="row" style="margin-bottom: 1rem">
+    <div class="col-12 col-md-6">
+        <RadzenText Text="Kartens" TextStyle="TextStyle.H3" TagName="TagName.H1" style="margin: 0" />
+    </div>
+    <div class="col-12 col-md-6 justify-content-start justify-content-md-end" style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem">
+    <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@AddButtonClick" Variant="Variant.Flat" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <RadzenDataGrid @ref="grid0" ColumnWidth="200px"  AllowFiltering="true" FilterMode="FilterMode.Advanced" AllowPaging="true" AllowSorting="true"
+            Data="@kartens"    TItem="QwTest7.Models.Quva.Karten" RowSelect="@EditRow" >
+            <Columns>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="KARTID" Title="KARTID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="KARTNR" Title="KARTNR">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="KUNWNR" Title="KUNWNR">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="REPLIKATION" Title="REPLIKATION">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="ERFASSTVON" Title="ERFASSTVON">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="ERFASSTAM" Title="ERFASSTAM">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="ERFASSTDATENBANK" Title="ERFASSTDATENBANK">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="GEAENDERTVON" Title="GEAENDERTVON">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="GEAENDERTAM" Title="GEAENDERTAM">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="GEAENDERTDATENBANK" Title="GEAENDERTDATENBANK">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="ANZAHLAENDERUNGEN" Title="ANZAHLAENDERUNGEN">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="BEMERKUNG" Title="BEMERKUNG">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="WERKNR" Title="WERKNR">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="MARANR" Title="MARANR">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="TRANSPORTMITTEL" Title="TRANSPORTMITTEL">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="SPEDITION" Title="SPEDITION">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="AUFKNR" Title="AUFKNR">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="SOLLMENGE" Title="SOLLMENGE">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="PEKRID" Title="PEKRID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="PEKRNR" Title="PEKRNR">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="PEKRBEZ" Title="PEKRBEZ">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="KUNDKNZ" Title="KUNDKNZ">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="SPERRKNZ" Title="SPERRKNZ">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="SPENDERKNZ" Title="SPENDERKNZ">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="SILONR" Title="SILONR">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="SORTEKNZ" Title="SORTEKNZ">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="FREMDWAEGUNG" Title="FREMDWAEGUNG">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="TARAGEWICHT" Title="TARAGEWICHT">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="TARADATUM" Title="TARADATUM">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="MAXBRUTTO" Title="MAXBRUTTO">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="TROCKENFEUCHT" Title="TROCKENFEUCHT">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="PROBENPFLICHT" Title="PROBENPFLICHT">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="TEILMENGE1" Title="TEILMENGE1">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="TEILMENGE2" Title="TEILMENGE2">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="TEILMENGE3" Title="TEILMENGE3">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="TEILMENGE4" Title="TEILMENGE4">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="TEILMENGE5" Title="TEILMENGE5">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="ORIKARTNR" Title="ORIKARTNR">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="EINGANGKNZ" Title="EINGANGKNZ">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="AUFBAU" Title="AUFBAU">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="TARATAGE" Title="TARATAGE">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="KARTNR2" Title="KARTNR2">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="KOMBIKNZ" Title="KOMBIKNZ">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="Fahrzeuge.TRANSPORTMITTEL" Title="Fahrzeuge">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Property="Speditionen.SPEDNAME" Title="Speditionen">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Karten" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                    <Template Context="karten">
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Medium"
+                            Shade="Shade.Lighter" Variant="Variant.Flat"
+                            Click=@(args => GridDeleteButtonClick(args, karten)) @onclick:stopPropagation="true" />
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </div>
+</div>

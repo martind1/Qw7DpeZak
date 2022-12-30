@@ -1,0 +1,102 @@
+@inherits LayoutComponentBase
+<RadzenDialog />
+<RadzenNotification />
+<RadzenTooltip />
+<RadzenContextMenu />
+
+<RadzenLayout style="grid-template-areas: 'rz-sidebar rz-header' 'rz-sidebar rz-body';">
+    <RadzenHeader>
+        <div class="container-fluid">
+            <div class="row justify-content-start align-items-center">
+                <div class="col-1 d-flex align-items-center ps-0 pl-0">
+                    <RadzenSidebarToggle Click="@SidebarToggleClick"></RadzenSidebarToggle>
+                </div>
+                <div class="col-9 d-flex align-items-center ps-0 pl-0">
+                    <RadzenMenu Click="OnParentClicked">
+                        <RadzenMenuItem Text="General" Icon="home">
+                            <RadzenMenuItem Text="Buttons" Path="buttons" Icon="account_circle"></RadzenMenuItem>
+                            <RadzenMenuItem Text="Menu" Path="menu" Icon="line_weight"></RadzenMenuItem>
+                            <RadzenMenuItem Click="OnChildClicked" Text="ChildClick" Icon="attach_file"></RadzenMenuItem>
+                            <RadzenMenuItem Text="Dialog" Path="dialog" Icon="perm_media"></RadzenMenuItem>
+                            <RadzenMenuItem Text="Notification" Path="notification" Icon="announcement"></RadzenMenuItem>
+                        </RadzenMenuItem>
+                        <RadzenMenuItem Text="Inputs" Icon="payment">
+                            <RadzenMenuItem Text="CheckBox" Path="checkbox" Icon="check_circle"></RadzenMenuItem>
+                            <RadzenMenuItem Text="TextBox" Path="textbox" Icon="input"></RadzenMenuItem>
+                            <RadzenMenuItem Text="TextArea" Path="textarea" Icon="description"></RadzenMenuItem>
+                            <RadzenMenuItem Text="Password" Path="password" Icon="payment"></RadzenMenuItem>
+                            <RadzenMenuItem Text="Numeric" Path="numeric" Icon="aspect_ratio"></RadzenMenuItem>
+                            <RadzenMenuItem Text="DatePicker" Path="datepicker" Icon="date_range"></RadzenMenuItem>
+                        </RadzenMenuItem>
+                        <RadzenMenuItem Text="Data" Icon="save">
+                            <RadzenMenuItem Text="DataGrid" Path="datagrid" Icon="grid_on"></RadzenMenuItem>
+                            <RadzenMenuItem Text="DataList" Path="datalist" Icon="list"></RadzenMenuItem>
+                            <RadzenMenuItem Text="DropDown" Path="dropdown" Icon="dns"></RadzenMenuItem>
+                            <RadzenMenuItem Text="DropDownDataGrid" Path="dropdown-datagrid" Icon="receipt"></RadzenMenuItem>
+                            <RadzenMenuItem Text="ListBox" Path="listbox" Icon="view_list"></RadzenMenuItem>
+                            <RadzenMenuItem Text="TemplateForm" Path="templateform" Icon="line_style"></RadzenMenuItem>
+                        </RadzenMenuItem>
+                        <RadzenMenuItem Text="Containers" Icon="account_box">
+                            <RadzenMenuItem Text="Tabs" Path="tabs" Icon="tab"></RadzenMenuItem>
+                            <RadzenMenuItem Text="Panel" Path="panel" Icon="content_paste"></RadzenMenuItem>
+                            <RadzenMenuItem Text="Fieldset" Path="fieldset" Icon="account_balance_wallet"></RadzenMenuItem>
+                            <RadzenMenuItem Text="Card" Path="card" Icon="line_style"></RadzenMenuItem>
+                        </RadzenMenuItem>
+                        <RadzenMenuItem Text="More">
+                            <RadzenMenuItem Text="Item1"></RadzenMenuItem>
+                            <RadzenMenuItem Text="Item2"></RadzenMenuItem>
+                            <RadzenMenuItem Text="More items">
+                                <RadzenMenuItem Text="More sub items">
+                                    <RadzenMenuItem Text="Item1"></RadzenMenuItem>
+                                    <RadzenMenuItem Text="Item2"></RadzenMenuItem>
+                                </RadzenMenuItem>
+                            </RadzenMenuItem>
+                        </RadzenMenuItem>
+                    </RadzenMenu>
+                </div>
+                <div class="col-2 d-flex align-items-center justify-content-end pr-0 pe-0">
+                    <RadzenProfileMenu Visible="@Security.IsAuthenticated()" Click="@ProfileMenuClick">
+                        <ChildContent>
+                            <RadzenProfileMenuItem Path="profile" Icon="settings" Text="Profile" />
+                            <RadzenProfileMenuItem Path="application-users" Icon="person" Text="Users" />
+                            <RadzenProfileMenuItem Path="application-roles" Icon="security" Text="Roles" />
+                            <RadzenProfileMenuItem Text="Logout" Value="Logout" Icon="power_settings_new" />
+                        </ChildContent>
+                        <Template>
+                            @Security.User?.Name
+                            <RadzenGravatar Email="@Security.User?.Name" />
+                        </Template>
+                    </RadzenProfileMenu>
+                </div>
+            </div>
+        </div>
+    </RadzenHeader>
+    <RadzenBody Expanded="@sidebarExpanded">
+        <div class="container-fluid pt-2 pt-md-3 pt-lg-4 pt-xl-5 pb-2 pb-lg-5" style="max-width: 1440px;">
+            <div class="row">
+                <div class="col">
+                    @Body
+                </div>
+            </div>
+        </div>
+    </RadzenBody>
+    <RadzenSidebar Expanded="@sidebarExpanded" style="z-index: 2">
+        <div class="py-3 py-lg-4" style="color: var(--rz-primary-light); padding: var(--rz-panel-menu-item-padding); border-bottom: var(--rz-panel-menu-item-border); display: flex; flex-direction: column; gap: 1rem; align-items: center;">
+            <svg width="48" height="48" viewBox="0 0 64 64">
+                <use href="/images/logo.svg#logo"></use>
+            </svg>
+            <RadzenText Text="QwTest7" TextStyle="Radzen.Blazor.TextStyle.Subtitle1" class="mb-0" style="color: var(--rz-primary-light);" />
+        </div>
+        <RadzenPanelMenu>
+            <RadzenPanelMenuItem Text="Home" Path="/" />
+            <RadzenPanelMenuItem Text="Fahrzeuges" Path="fahrzeuges" />
+            <RadzenPanelMenuItem Text="Identkartens" Path="kartens" />
+            <RadzenPanelMenuItem Text="Speditionens" Path="speditionens" />
+            <RadzenPanelMenuItem Text="Filterabfragens" Path="filterabfragens" />
+        </RadzenPanelMenu>
+        <div class="py-3 py-md-4" style="padding: var(--rz-panel-menu-item-padding);">
+            <RadzenText Text="QwTest7 v1.0.0" TextStyle="Radzen.Blazor.TextStyle.Caption" style="color: var(--rz-text-disabled-color);" TagName="Radzen.Blazor.TagName.P" TextAlign="Radzen.TextAlign.Center" />
+            <RadzenText Text="Copyright Ⓒ 2022" TextStyle="Radzen.Blazor.TextStyle.Caption" class="mb-0" style="color: var(--rz-text-disabled-color);" TagName="Radzen.Blazor.TagName.P" TextAlign="Radzen.TextAlign.Center" />
+        </div>
+    </RadzenSidebar>
+</RadzenLayout>

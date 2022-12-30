@@ -1,0 +1,172 @@
+@page "/add-fahrzeuge"
+
+@attribute [Authorize]
+
+<PageTitle>Add Fahrzeuge</PageTitle>
+    <div class="col-md-12">
+        <RadzenAlert Shade="Shade.Lighter" Variant="Variant.Flat" Size="AlertSize.Small" AlertStyle="AlertStyle.Danger" Visible="@errorVisible">Cannot save Fahrzeuge</RadzenAlert>
+        <RadzenTemplateForm TItem="QwTest7.Models.Quva.Fahrzeuge" Data="@fahrzeuge" Visible="@(fahrzeuge != null && canEdit)" Submit="@FormSubmit">
+            <div style="margin-bottom: 1rem" class="row">
+                <div class="col-md-3">
+                    <RadzenLabel Text="TRANSPORTMITTEL" Component="TRANSPORTMITTEL" style="width: 100%" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenTextBox style="display: block; width: 100%" @bind-Value="@fahrzeuge.TRANSPORTMITTEL" Name="TRANSPORTMITTEL" />
+                    <RadzenRequiredValidator Component="TRANSPORTMITTEL" Text="TRANSPORTMITTEL is required" />
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+                <div class="col-md-3">
+                    <RadzenLabel Text="WERKNR" Component="WERKNR" style="width: 100%" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenTextBox style="display: block; width: 100%" @bind-Value="@fahrzeuge.WERKNR" Name="WERKNR" />
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+                <div class="col-md-3">
+                    <RadzenLabel Text="SPEDITION" Component="SPEDITION" style="width: 100%" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenTextBox style="display: block; width: 100%" @bind-Value="@fahrzeuge.SPEDITION" Name="SPEDITION" />
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+                <div class="col-md-3">
+                    <RadzenLabel Text="TARAGEWICHT" Component="TARAGEWICHT" style="width: 100%" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenNumeric style="display: block; width: 100%" @bind-Value="@fahrzeuge.TARAGEWICHT" Name="TARAGEWICHT" />
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+                <div class="col-md-3">
+                    <RadzenLabel Text="TARADATUM" Component="TARADATUM" style="width: 100%" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenDatePicker DateFormat="MM/dd/yyyy" style="display: block; width: 100%" @bind-Value="@fahrzeuge.TARADATUM" Name="TARADATUM" />
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+                <div class="col-md-3">
+                    <RadzenLabel Text="REPLIKATION" Component="REPLIKATION" style="width: 100%" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenTextBox style="display: block; width: 100%" @bind-Value="@fahrzeuge.REPLIKATION" Name="REPLIKATION" />
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+                <div class="col-md-3">
+                    <RadzenLabel Text="ERFASSTVON" Component="ERFASSTVON" style="width: 100%" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenTextBox style="display: block; width: 100%" @bind-Value="@fahrzeuge.ERFASSTVON" Name="ERFASSTVON" />
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+                <div class="col-md-3">
+                    <RadzenLabel Text="ERFASSTAM" Component="ERFASSTAM" style="width: 100%" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenDatePicker DateFormat="MM/dd/yyyy" style="display: block; width: 100%" @bind-Value="@fahrzeuge.ERFASSTAM" Name="ERFASSTAM" />
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+                <div class="col-md-3">
+                    <RadzenLabel Text="ERFASSTDATENBANK" Component="ERFASSTDATENBANK" style="width: 100%" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenTextBox style="display: block; width: 100%" @bind-Value="@fahrzeuge.ERFASSTDATENBANK" Name="ERFASSTDATENBANK" />
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+                <div class="col-md-3">
+                    <RadzenLabel Text="GEAENDERTVON" Component="GEAENDERTVON" style="width: 100%" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenTextBox style="display: block; width: 100%" @bind-Value="@fahrzeuge.GEAENDERTVON" Name="GEAENDERTVON" />
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+                <div class="col-md-3">
+                    <RadzenLabel Text="GEAENDERTAM" Component="GEAENDERTAM" style="width: 100%" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenDatePicker DateFormat="MM/dd/yyyy" style="display: block; width: 100%" @bind-Value="@fahrzeuge.GEAENDERTAM" Name="GEAENDERTAM" />
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+                <div class="col-md-3">
+                    <RadzenLabel Text="GEAENDERTDATENBANK" Component="GEAENDERTDATENBANK" style="width: 100%" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenTextBox style="display: block; width: 100%" @bind-Value="@fahrzeuge.GEAENDERTDATENBANK" Name="GEAENDERTDATENBANK" />
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+                <div class="col-md-3">
+                    <RadzenLabel Text="ANZAHLAENDERUNGEN" Component="ANZAHLAENDERUNGEN" style="width: 100%" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenNumeric style="display: block; width: 100%" @bind-Value="@fahrzeuge.ANZAHLAENDERUNGEN" Name="ANZAHLAENDERUNGEN" />
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+                <div class="col-md-3">
+                    <RadzenLabel Text="BEMERKUNG" Component="BEMERKUNG" style="width: 100%" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenTextBox style="display: block; width: 100%" @bind-Value="@fahrzeuge.BEMERKUNG" Name="BEMERKUNG" />
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+                <div class="col-md-3">
+                    <RadzenLabel Text="FAHRZEUGTYP" Component="FAHRZEUGTYP" style="width: 100%" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenTextBox style="display: block; width: 100%" @bind-Value="@fahrzeuge.FAHRZEUGTYP" Name="FAHRZEUGTYP" />
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+                <div class="col-md-3">
+                    <RadzenLabel Text="TARAFREIANZAHL" Component="TARAFREIANZAHL" style="width: 100%" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenNumeric style="display: block; width: 100%" @bind-Value="@fahrzeuge.TARAFREIANZAHL" Name="TARAFREIANZAHL" />
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+                <div class="col-md-3">
+                    <RadzenLabel Text="MAXBRUTTO" Component="MAXBRUTTO" style="width: 100%" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenNumeric style="display: block; width: 100%" @bind-Value="@fahrzeuge.MAXBRUTTO" Name="MAXBRUTTO" />
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+                <div class="col-md-3">
+                    <RadzenLabel Text="FLAGS" Component="FLAGS" style="width: 100%" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenTextBox style="display: block; width: 100%" @bind-Value="@fahrzeuge.FLAGS" Name="FLAGS" />
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+                <div class="col-md-3">
+                    <RadzenLabel Text="Speditionen" Component="Speditionen" style="width: 100%" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenDropDownDataGrid Data="@speditionensForSPEDID" TextProperty="SPEDNAME" ValueProperty="SPEDID"
+                         Placeholder="Choose Speditionen" style="display: block; width: 100%" @bind-Value="@fahrzeuge.SPEDID" Name="SPEDID"
+                           />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col d-flex justify-content-end" style="margin-top: 1rem">
+                    <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="Save" Style="margin-right: 0.5rem" Variant="Variant.Flat" />
+                    <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Cancel" Variant="Variant.Flat" Click="@CancelButtonClick"  />
+                </div>
+            </div>
+        </RadzenTemplateForm>
+    </div>
+
