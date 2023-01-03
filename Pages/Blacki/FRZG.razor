@@ -1,8 +1,8 @@
-@page "/fahrzeuges"
+@page "/FRZG"
 
 @attribute [Authorize]
 
-<PageTitle>Fahrzeuges</PageTitle>
+<PageTitle>Fahrzeuge</PageTitle>
 <div class="row" style="margin-bottom: 1rem">
     <div class="col-12 col-md-6">
         <RadzenText Text="Fahrzeuges" TextStyle="TextStyle.H3" TagName="TagName.H1" style="margin: 0" />
@@ -13,17 +13,18 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <RadzenDataGrid @ref="grid0" 
-            ColumnWidth="200px"  
-            AllowFiltering="true" FilterMode="FilterMode.Advanced" 
-            AllowPaging="true" 
-            PageSizeOptions="@pageSizeOptions" 
-            ShowPagingSummary="@showPagerSummary" PagingSummaryFormat="@pagingSummaryFormat"
-            AllowSorting="true"
-            Density="@Density"
-            Data="@fahrzeuges"
-            TItem="QwTest7.Models.Quva.Fahrzeuge" 
-            RowSelect="@EditRow" >
+        <RadzenDataGrid @ref="grid0"
+                        ColumnWidth="200px"
+                        AllowFiltering="true" FilterMode="FilterMode.Advanced"
+                        AllowPaging="true"
+                        PageSizeOptions="@pageSizeOptions"
+                        ShowPagingSummary="@showPagerSummary" PagingSummaryFormat="@pagingSummaryFormat"
+                        AllowSorting="true"
+                        Density="@Density"
+                        Data="@fahrzeuges"
+                        TItem="QwTest7.Models.Quva.Fahrzeuge"
+                        SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedList
+                        >
             <Columns>
                 <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
                     <Template Context="fahrzeuge">

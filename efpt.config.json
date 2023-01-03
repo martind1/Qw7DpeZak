@@ -1,0 +1,52 @@
+﻿{
+   "CodeGenerationMode": 3,
+   "ContextClassName": "BlackiContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": "Data",
+   "OutputPath": "Models\\Blacki",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "QwTest7",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "QUVA.FAHRZEUGE",
+         "ObjectType": 0
+      },
+      {
+         "Name": "QUVA.FILTERABFRAGEN",
+         "ObjectType": 0
+      },
+      {
+         "Name": "QUVA.KARTEN",
+         "ObjectType": 0
+      },
+      {
+         "Name": "QUVA.SPEDITIONEN",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "QUVA.blacki",
+   "UncountableWords": null,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": true,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": false,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false,
+   "UseT4": true
+}

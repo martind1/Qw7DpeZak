@@ -35,16 +35,6 @@ namespace QwTest7
         public void Reset() => Context.ChangeTracker.Entries().Where(e => e.Entity != null).ToList().ForEach(e => e.State = EntityState.Detached);
 
 
-        public async Task ExportFahrzeugesToExcel(Query query = null, string fileName = null)
-        {
-            navigationManager.NavigateTo(query != null ? query.ToUrl($"export/quva/fahrzeuges/excel(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')") : $"export/quva/fahrzeuges/excel(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')", true);
-        }
-
-        public async Task ExportFahrzeugesToCSV(Query query = null, string fileName = null)
-        {
-            navigationManager.NavigateTo(query != null ? query.ToUrl($"export/quva/fahrzeuges/csv(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')") : $"export/quva/fahrzeuges/csv(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')", true);
-        }
-
         partial void OnFahrzeugesRead(ref IQueryable<QwTest7.Models.Quva.Fahrzeuge> items);
 
         public async Task<IQueryable<QwTest7.Models.Quva.Fahrzeuge>> GetFahrzeuges(Query query = null)
@@ -218,16 +208,6 @@ namespace QwTest7
             return itemToDelete;
         }
     
-        public async Task ExportKartensToExcel(Query query = null, string fileName = null)
-        {
-            navigationManager.NavigateTo(query != null ? query.ToUrl($"export/quva/kartens/excel(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')") : $"export/quva/kartens/excel(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')", true);
-        }
-
-        public async Task ExportKartensToCSV(Query query = null, string fileName = null)
-        {
-            navigationManager.NavigateTo(query != null ? query.ToUrl($"export/quva/kartens/csv(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')") : $"export/quva/kartens/csv(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')", true);
-        }
-
         partial void OnKartensRead(ref IQueryable<QwTest7.Models.Quva.Karten> items);
 
         public async Task<IQueryable<QwTest7.Models.Quva.Karten>> GetKartens(Query query = null)
@@ -401,16 +381,6 @@ namespace QwTest7
             return itemToDelete;
         }
     
-        public async Task ExportSpeditionensToExcel(Query query = null, string fileName = null)
-        {
-            navigationManager.NavigateTo(query != null ? query.ToUrl($"export/quva/speditionens/excel(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')") : $"export/quva/speditionens/excel(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')", true);
-        }
-
-        public async Task ExportSpeditionensToCSV(Query query = null, string fileName = null)
-        {
-            navigationManager.NavigateTo(query != null ? query.ToUrl($"export/quva/speditionens/csv(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')") : $"export/quva/speditionens/csv(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')", true);
-        }
-
         partial void OnSpeditionensRead(ref IQueryable<QwTest7.Models.Quva.Speditionen> items);
 
         public async Task<IQueryable<QwTest7.Models.Quva.Speditionen>> GetSpeditionens(Query query = null)
@@ -583,5 +553,5 @@ namespace QwTest7
 
             return itemToDelete;
         }
-        }
+    }
 }
