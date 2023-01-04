@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace QwTest7.Models.Blacki;
 
-[Index("KART_NR_2", "WERK_NR", Name = "I_KART_2")]
-[Index("KART_NR", "WERK_NR", Name = "UK1_KART", IsUnique = true)]
+[Microsoft.EntityFrameworkCore.Index("KART_NR_2", "WERK_NR", Name = "I_KART_2")]
+[Microsoft.EntityFrameworkCore.Index("KART_NR", "WERK_NR", Name = "UK1_KART", IsUnique = true)]
 public partial class KARTEN
 {
     [Key]

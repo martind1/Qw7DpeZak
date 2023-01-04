@@ -80,7 +80,7 @@ public partial class FRZG
             });
         }
     }
-    #region Grid decoration
+    #region MD Grid decoration
     public IEnumerable<int> pageSizeOptions { get; set; } = new int[] { 10, 20, 30 };
     public bool showPagerSummary = true;
     public string pagingSummaryFormat = "Seite {0} von {1} ({2} Datensätze)";

@@ -80,9 +80,13 @@ try
         options.UseOracle(builder.Configuration.GetConnectionString("QusyConnection"));
     });
 
+
     var app = builder.Build();
 
     //md Serilog:
+    app.UseSerilogRequestLogging();
+
+    // Configure the HTTP request pipeline.
     app.Use(async (httpContext, next) =>
     {
         //Get username  
@@ -95,9 +99,6 @@ try
 
         await next.Invoke();
     });
-    app.UseSerilogRequestLogging();
-
-    // Configure the HTTP request pipeline.
     if (!app.Environment.IsDevelopment())
     {
         app.UseExceptionHandler("/Error");

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace QwTest7.Models.Blacki;
 
-[Index("WERK_NR", "SPED_NAME", Name = "UK_SPED", IsUnique = true)]
+[Microsoft.EntityFrameworkCore.Index("WERK_NR", "SPED_NAME", Name = "UK_SPED", IsUnique = true)]
 public partial class SPEDITIONEN
 {
     [Key]

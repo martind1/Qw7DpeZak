@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace QwTest7.Models.Blacki;
 
-[Index("FORM", "NAME", Name = "UK_FLTR", IsUnique = true)]
+[Microsoft.EntityFrameworkCore.Index("FORM", "NAME", Name = "UK_FLTR", IsUnique = true)]
 public partial class FILTERABFRAGEN
 {
     [StringLength(20)]
