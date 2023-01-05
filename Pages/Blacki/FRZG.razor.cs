@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Components.Web;
 using Radzen;
 using Radzen.Blazor;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using QwTest7.Models.Blacki;
+using QwTest7.Services;
+using QwTest7.Services.Kmp;
 
 namespace QwTest7.Pages.Blacki;
 
@@ -32,17 +35,17 @@ public partial class FRZG
     protected NotificationService NotificationService { get; set; }
 
     [Inject]
-    public QuvaService QuvaService { get; set; }
-
-    protected IEnumerable<Models.Quva.Fahrzeuge> fahrzeuges;
-
-    protected RadzenDataGrid<Models.Quva.Fahrzeuge> grid0;
+    public BlackiService BlackiService { get; set; }
 
     [Inject]
     protected SecurityService Security { get; set; }
+
+    protected IEnumerable<FAHRZEUGE> tbl0;
+    protected RadzenDataGrid<FAHRZEUGE> grid0;
+
     protected override async Task OnInitializedAsync()
     {
-        fahrzeuges = await QuvaService.GetFahrzeuges(new Query { Expand = "Speditionen" });
+        tbl0 = await BlackiService.EntityGet<FAHRZEUGE>(new Query { Expand = "SPEDITIONEN" });
     }
 
     protected async Task AddButtonClick(MouseEventArgs args)
@@ -51,19 +54,21 @@ public partial class FRZG
         await grid0.Reload();
     }
 
-    protected async Task EditRow(Models.Quva.Fahrzeuge args)
+    protected async Task EditRow(FAHRZEUGE args)
     {
-        await DialogService.OpenAsync<Studio.EditFahrzeuge>("Edit Fahrzeuge", new Dictionary<string, object> { { "FRZGID", args.FRZGID } });
+        await DialogService.OpenAsync<Studio.EditFahrzeuge>("Edit Fahrzeuge", new Dictionary<string, object> { { "FRZG_ID", args.FRZG_ID } });
     }
 
-    protected async Task GridDeleteButtonClick(MouseEventArgs args, Models.Quva.Fahrzeuge fahrzeuge)
+    protected async Task GridDeleteButtonClick(MouseEventArgs args, FAHRZEUGE entity)
     {
         try
         {
             if (await DialogService.Confirm("Are you sure you want to delete this record?") == true)
             {
-                var deleteResult = await QuvaService.DeleteFahrzeuge(fahrzeuge.FRZGID);
+                if (tbl0.Contains(entity))
+                    throw new KmpException(String.Format("{0} nicht gefunden", entity.GetType().Name));
 
+                var deleteResult = await BlackiService.EntityDelete<FAHRZEUGE>(entity);
                 if (deleteResult != null)
                 {
                     await grid0.Reload();
@@ -76,16 +81,18 @@ public partial class FRZG
             {
                 Severity = NotificationSeverity.Error,
                 Summary = $"Error",
-                Detail = $"Unable to delete Fahrzeuge"
+                Detail = String.Format("Unable to delete {0}:{1}{2}", entity.GetType().Name, Environment.NewLine, ex.Message)
             });
         }
     }
     #region MD Grid decoration
+
     public IEnumerable<int> pageSizeOptions { get; set; } = new int[] { 10, 20, 30 };
     public bool showPagerSummary = true;
     public string pagingSummaryFormat = "Seite {0} von {1} ({2} Datensätze)";
     public Density Density = Density.Compact;
 
-    IList<Models.Quva.Fahrzeuge> selectedList; 
+    IList<FAHRZEUGE> selectedList;
+
     #endregion
 }

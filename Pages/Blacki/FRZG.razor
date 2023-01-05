@@ -5,7 +5,7 @@
 <PageTitle>Fahrzeuge</PageTitle>
 <div class="row" style="margin-bottom: 1rem">
     <div class="col-12 col-md-6">
-        <RadzenText Text="Fahrzeuges" TextStyle="TextStyle.H3" TagName="TagName.H1" style="margin: 0" />
+        <RadzenText Text="FAHRZEUGE" TextStyle="TextStyle.H3" TagName="TagName.H1" style="margin: 0" />
     </div>
     <div class="col-12 col-md-6 justify-content-start justify-content-md-end" style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem">
     <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@AddButtonClick" Variant="Variant.Flat" />
@@ -21,57 +21,57 @@
                         ShowPagingSummary="@showPagerSummary" PagingSummaryFormat="@pagingSummaryFormat"
                         AllowSorting="true"
                         Density="@Density"
-                        Data="@fahrzeuges"
-                        TItem="QwTest7.Models.Quva.Fahrzeuge"
+                        Data="@tbl0"
+                        TItem="QwTest7.Models.Blacki.FAHRZEUGE"
                         SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedList
                         >
             <Columns>
-                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
-                    <Template Context="fahrzeuge">
+                <RadzenDataGridColumn TItem="QwTest7.Models.Blacki.FAHRZEUGE" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                    <Template Context="FAHRZEUGE">
                         <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.ExtraSmall"
                                       Shade="Shade.Lighter" Variant="Variant.Flat"
-                                      Click=@(args => GridDeleteButtonClick(args, fahrzeuge)) @onclick:stopPropagation="true" />
+                                      Click=@(args => GridDeleteButtonClick(args, FAHRZEUGE)) @onclick:stopPropagation="true" />
                     </Template>
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Property="FRZGID" Title="FRZGID">
+                <RadzenDataGridColumn TItem="QwTest7.Models.Blacki.FAHRZEUGE" Property="FRZG_ID" Title="FRZGID">
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Property="TRANSPORTMITTEL" Title="TRANSPORTMITTEL">
+                <RadzenDataGridColumn TItem="QwTest7.Models.Blacki.FAHRZEUGE" Property="TRANSPORTMITTEL" Title="TRANSPORTMITTEL">
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Property="WERKNR" Title="WERKNR">
+                <RadzenDataGridColumn TItem="QwTest7.Models.Blacki.FAHRZEUGE" Property="WERK_NR" Title="WERKNR">
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Property="SPEDITION" Title="SPEDITION">
+                <RadzenDataGridColumn TItem="QwTest7.Models.Blacki.FAHRZEUGE" Property="SPEDITION" Title="SPEDITION">
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Property="TARAGEWICHT" Title="TARAGEWICHT">
+                <RadzenDataGridColumn TItem="QwTest7.Models.Blacki.FAHRZEUGE" Property="TARA_GEWICHT" Title="TARAGEWICHT">
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Property="TARADATUM" Title="TARADATUM">
+                <RadzenDataGridColumn TItem="QwTest7.Models.Blacki.FAHRZEUGE" Property="TARA_DATUM" Title="TARADATUM">
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Property="REPLIKATION" Title="REPLIKATION">
+                <RadzenDataGridColumn TItem="QwTest7.Models.Blacki.FAHRZEUGE" Property="REPLIKATION" Title="REPLIKATION">
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Property="ERFASSTVON" Title="ERFASSTVON">
+                <RadzenDataGridColumn TItem="QwTest7.Models.Blacki.FAHRZEUGE" Property="ERFASST_VON" Title="ERFASSTVON">
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Property="ERFASSTAM" Title="ERFASSTAM">
+                <RadzenDataGridColumn TItem="QwTest7.Models.Blacki.FAHRZEUGE" Property="ERFASST_AM" Title="ERFASSTAM">
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Property="ERFASSTDATENBANK" Title="ERFASSTDATENBANK">
+                <RadzenDataGridColumn TItem="QwTest7.Models.Blacki.FAHRZEUGE" Property="ERFASST_DATENBANK" Title="ERFASSTDATENBANK">
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Property="GEAENDERTVON" Title="GEAENDERTVON">
+                <RadzenDataGridColumn TItem="QwTest7.Models.Blacki.FAHRZEUGE" Property="GEAENDERT_VON" Title="GEAENDERTVON">
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Property="GEAENDERTAM" Title="GEAENDERTAM">
+                <RadzenDataGridColumn TItem="QwTest7.Models.Blacki.FAHRZEUGE" Property="GEAENDERT_AM" Title="GEAENDERTAM">
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Property="GEAENDERTDATENBANK" Title="GEAENDERTDATENBANK">
+                <RadzenDataGridColumn TItem="QwTest7.Models.Blacki.FAHRZEUGE" Property="GEAENDERT_DATENBANK" Title="GEAENDERTDATENBANK">
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Property="ANZAHLAENDERUNGEN" Title="ANZAHLAENDERUNGEN">
+                <RadzenDataGridColumn TItem="QwTest7.Models.Blacki.FAHRZEUGE" Property="ANZAHL_AENDERUNGEN" Title="ANZAHLAENDERUNGEN">
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Property="BEMERKUNG" Title="BEMERKUNG">
+                <RadzenDataGridColumn TItem="QwTest7.Models.Blacki.FAHRZEUGE" Property="BEMERKUNG" Title="BEMERKUNG">
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Property="FAHRZEUGTYP" Title="FAHRZEUGTYP">
+                <RadzenDataGridColumn TItem="QwTest7.Models.Blacki.FAHRZEUGE" Property="FAHRZEUGTYP" Title="FAHRZEUGTYP">
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Property="TARAFREIANZAHL" Title="TARAFREIANZAHL">
+                <RadzenDataGridColumn TItem="QwTest7.Models.Blacki.FAHRZEUGE" Property="TARA_FREI_ANZAHL" Title="TARAFREIANZAHL">
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Property="MAXBRUTTO" Title="MAXBRUTTO">
+                <RadzenDataGridColumn TItem="QwTest7.Models.Blacki.FAHRZEUGE" Property="MAX_BRUTTO" Title="MAXBRUTTO">
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Property="FLAGS" Title="FLAGS">
+                <RadzenDataGridColumn TItem="QwTest7.Models.Blacki.FAHRZEUGE" Property="FLAGS" Title="FLAGS">
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="QwTest7.Models.Quva.Fahrzeuge" Property="Speditionen.SPEDNAME" Title="Speditionen">
+                <RadzenDataGridColumn TItem="QwTest7.Models.Blacki.FAHRZEUGE" Property="SPEDITIONEN.SPEDNAME" Title="Speditionen">
                 </RadzenDataGridColumn>
             </Columns>
         </RadzenDataGrid>

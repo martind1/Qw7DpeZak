@@ -6,6 +6,8 @@ using Query = Radzen.Query;
 using QwTest7.Data;
 using QwTest7.Models.Blacki;
 using System.Linq.Dynamic.Core;
+using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.InkML;
 
 namespace QwTest7.Services
 {
@@ -150,6 +152,42 @@ namespace QwTest7.Services
             Ctx.Add<T>(entity);
             Ctx.SaveChanges();
         }
+        #endregion
+
+        #region Studio Funktionen
+
+        public async Task<IQueryable<T>> EntityGet<T>(Query query = null) where T : class
+        {
+            var items = Ctx.Set<T>().AsQueryable();
+            if (query != null)
+            {
+                items = (IQueryable<T>)QueryableFromQuery(query, items);
+            }
+            return await Task.FromResult(items);
+        }
+
+        public async Task<T> EntityDelete<T>(T entity) where T : class
+        {
+            if (entity == null)
+            {
+                throw new Exception("Item no longer available");
+            }
+
+
+            Ctx.Remove<T>(entity);
+            try
+            {
+                Ctx.SaveChanges();
+            }
+            catch
+            {
+                Ctx.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Unchanged;
+                throw;
+            }
+
+            return entity;
+        }
+
 
         #endregion
 

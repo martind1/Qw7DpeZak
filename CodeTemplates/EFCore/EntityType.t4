@@ -35,6 +35,7 @@
         usings.Add("System.ComponentModel.DataAnnotations");
         usings.Add("System.ComponentModel.DataAnnotations.Schema");
         usings.Add("Microsoft.EntityFrameworkCore");
+        usings.Add("IndexAttribute = Microsoft.EntityFrameworkCore.IndexAttribute");
     }
 
     if (!string.IsNullOrEmpty(NamespaceHint))
@@ -53,7 +54,9 @@ namespace <#= NamespaceHint #>;
 /// </summary>
 <#
     }
-
+#>
+[Table("<#= EntityType.Name #>")]
+<#
     if (Options.UseDataAnnotations)
     {
         foreach (var dataAnnotation in EntityType.GetDataAnnotations(annotationCodeGenerator))

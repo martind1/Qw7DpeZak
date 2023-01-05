@@ -10,6 +10,21 @@ namespace QwTest7.Data;
 
 public partial class BlackiContext : DbContext
 {
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseOracle(GetConnection().GetConnectionString("QuvaConnection"),
+            b => b.UseOracleSQLCompatibility(GetConnection()["OracleSQLCompatibility"] ?? "11"));
+
+        base.OnConfiguring(optionsBuilder);
+    }
+
+    private static IConfiguration GetConnection()
+    {
+        var configurationBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json",
+            optional: true, reloadOnChange: false);
+        return configurationBuilder.Build();
+    }
+
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
     {
         #region Bulk configuration via model class for all table names

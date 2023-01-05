@@ -44,7 +44,10 @@ try
     //Studio Quva
     builder.Services.AddScoped<QwTest7.QuvaService>();
     builder.Services.AddDbContext<QwTest7.Data.QuvaContext>();
-    //(options => { options.UseOracle(builder.Configuration.GetConnectionString("QuvaConnection"), b => b.UseOracleSQLCompatibility("11")); });
+
+    //Blacki Quva
+    builder.Services.AddScoped<QwTest7.Services.BlackiService>();
+    builder.Services.AddDbContext<QwTest7.Data.BlackiContext>();
 
     //Security
     builder.Services.AddHttpClient("QwTest7").AddHeaderPropagation(o => o.Headers.Add("Cookie"));

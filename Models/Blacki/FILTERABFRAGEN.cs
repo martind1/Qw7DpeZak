@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using IndexAttribute = Microsoft.EntityFrameworkCore.IndexAttribute;
 using Microsoft.EntityFrameworkCore;
 
 namespace QwTest7.Models.Blacki;
 
-[Microsoft.EntityFrameworkCore.Index("FORM", "NAME", Name = "UK_FLTR", IsUnique = true)]
+[Table("FILTERABFRAGEN")]
+[Index("FORM", "NAME", Name = "UK_FLTR", IsUnique = true)]
 public partial class FILTERABFRAGEN
 {
     [StringLength(20)]

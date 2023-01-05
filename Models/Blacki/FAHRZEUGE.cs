@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using IndexAttribute = Microsoft.EntityFrameworkCore.IndexAttribute;
 using Microsoft.EntityFrameworkCore;
 
 namespace QwTest7.Models.Blacki;
 
-[Microsoft.EntityFrameworkCore.Index("WERK_NR", "TRANSPORTMITTEL", "SPEDITION", Name = "UK_FRZG", IsUnique = true)]
+[Table("FAHRZEUGE")]
+[Index("WERK_NR", "TRANSPORTMITTEL", "SPEDITION", Name = "UK_FRZG", IsUnique = true)]
 public partial class FAHRZEUGE
 {
     [Key]
