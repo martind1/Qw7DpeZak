@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
 
 using QwTest7.Models;
+using Serilog;
 
 namespace QwTest7
 {
@@ -30,8 +31,9 @@ namespace QwTest7
 
                 if (state.IsAuthenticated)
                 {
+                    Log.Information($"IsAuthenticated: ");
                     identity = new ClaimsIdentity(state.Claims.Select(c => new Claim(c.Type, c.Value)), "QwTest7");
-                }
+                } else Log.Information($"NOT IsAuthenticated: ");
             }
             catch (HttpRequestException ex)
             {

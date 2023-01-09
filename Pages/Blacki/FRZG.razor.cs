@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using QwTest7.Models.Blacki;
 using QwTest7.Services;
 using QwTest7.Services.Kmp;
+using Serilog;
 
 namespace QwTest7.Pages.Blacki;
 
@@ -46,12 +47,15 @@ public partial class FRZG
     protected override async Task OnInitializedAsync()
     {
         tbl0 = await BlackiService.EntityGet<FAHRZEUGE>(new Query { Expand = "SPEDITIONEN" });
+        Log.Information($"OnInitializedAsync: {DateTime.Now}");
     }
 
     protected async Task AddButtonClick(MouseEventArgs args)
     {
-        await DialogService.OpenAsync<Studio.AddFahrzeuge>("Add Fahrzeuge", null);
-        await grid0.Reload();
+        //await DialogService.OpenAsync<Studio.AddFahrzeuge>("Add Fahrzeuge", null);
+        //await grid0.Reload();
+        //Test:
+        await JSRuntime.InvokeAsync<object>("open", "speditionens", "_blank");
     }
 
     protected async Task EditRow(FAHRZEUGE args)

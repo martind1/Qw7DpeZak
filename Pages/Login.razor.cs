@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Radzen;
 using Radzen.Blazor;
 using QwTest7.Pages.Security;
+using Serilog;
 
 namespace QwTest7.Pages
 {
@@ -49,7 +50,7 @@ namespace QwTest7.Pages
             info = query.Get("info");
 
             redirectUrl = query.Get("redirectUrl");
-
+            Log.Information($"redirectUrl={redirectUrl}");
             errorVisible = !string.IsNullOrEmpty(error);
 
             infoVisible = !string.IsNullOrEmpty(info);

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Options;
 using QwTest7.Models.Blacki;
 
 namespace QwTest7.Data;
@@ -14,6 +15,8 @@ public partial class BlackiContext : DbContext
     {
         optionsBuilder.UseOracle(GetConnection().GetConnectionString("QuvaConnection"),
             b => b.UseOracleSQLCompatibility(GetConnection()["OracleSQLCompatibility"] ?? "11"));
+
+        optionsBuilder.EnableSensitiveDataLogging();
 
         base.OnConfiguring(optionsBuilder);
     }

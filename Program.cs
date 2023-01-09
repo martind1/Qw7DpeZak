@@ -5,14 +5,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Radzen;
 using Microsoft.EntityFrameworkCore;
-using QwTest7.Data;
 using Microsoft.AspNetCore.Identity;
-using QwTest7.Models;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData.ModelBuilder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Serilog;
 using Serilog.Context;
+using QwTest7;
+using QwTest7.Data;
+using QwTest7.Models;
+using QwTest7.Services;
 
 //md Serilog noch ohne Builder und ohne appsettings.json:
 Log.Logger = new LoggerConfiguration()
@@ -42,23 +44,20 @@ try
     //08.08.22 keine Telemetrie builder.Services.AddApplicationInsightsTelemetry();
 
     //Studio Quva
-    builder.Services.AddScoped<QwTest7.QuvaService>();
-    builder.Services.AddDbContext<QwTest7.Data.QuvaContext>();
+    builder.Services.AddScoped<QuvaService>();
+    builder.Services.AddDbContext<QuvaContext>();
 
     //Blacki Quva
-    builder.Services.AddScoped<QwTest7.Services.BlackiService>();
-    builder.Services.AddDbContext<QwTest7.Data.BlackiContext>();
+    builder.Services.AddScoped<BlackiService>();
+    builder.Services.AddDbContext<BlackiContext>();
 
     //Security
     builder.Services.AddHttpClient("QwTest7").AddHeaderPropagation(o => o.Headers.Add("Cookie"));
     builder.Services.AddHeaderPropagation(o => o.Headers.Add("Cookie"));
     builder.Services.AddAuthentication();
     builder.Services.AddAuthorization();
-    builder.Services.AddScoped<QwTest7.SecurityService>();
-    builder.Services.AddDbContext<ApplicationIdentityDbContext>(options =>
-    {
-        options.UseOracle(builder.Configuration.GetConnectionString("QuvaConnection"), b => b.UseOracleSQLCompatibility("11"));
-    });
+    builder.Services.AddScoped<SecurityService>();
+    builder.Services.AddDbContext<ApplicationIdentityDbContext>();
     builder.Services.AddIdentity<ApplicationUser, ApplicationRole>().AddEntityFrameworkStores<ApplicationIdentityDbContext>().AddDefaultTokenProviders();
     builder.Services.AddControllers().AddOData(o =>
     {
@@ -70,17 +69,13 @@ try
         oDataBuilder.EntitySet<ApplicationRole>("ApplicationRoles");
         o.AddRouteComponents("odata/Identity", oDataBuilder.GetEdmModel()).Count().Filter().OrderBy().Expand().Select().SetMaxTop(null).TimeZone = TimeZoneInfo.Utc;
     });
-    builder.Services.AddScoped<AuthenticationStateProvider, QwTest7.ApplicationAuthenticationStateProvider>();
+    builder.Services.AddScoped<AuthenticationStateProvider, ApplicationAuthenticationStateProvider>();
 
     //Studio Qusy
-    builder.Services.AddScoped<QwTest7.QusyService>();
-    builder.Services.AddDbContext<QwTest7.Data.QusyContext>(options =>
+    builder.Services.AddScoped<QusyService>();
+    builder.Services.AddDbContext<QusyContext>(options =>
     {
         options.UseOracle(builder.Configuration.GetConnectionString("QusyConnection"), b => b.UseOracleSQLCompatibility("11"));
-    });
-    builder.Services.AddDbContext<QwTest7.Data.QusyContext>(options =>
-    {
-        options.UseOracle(builder.Configuration.GetConnectionString("QusyConnection"));
     });
 
 
@@ -109,6 +104,7 @@ try
         app.UseHsts();
     }
 
+    app.UseWebSockets(); 
     app.UseHttpsRedirection();
     app.UseStaticFiles();
     app.UseHeaderPropagation();

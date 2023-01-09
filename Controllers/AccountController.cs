@@ -14,6 +14,7 @@ using QwTest7.Models;
 
 namespace QwTest7.Controllers
 {
+    [RequireHttps]
     [Route("Account/[action]")]
     public partial class AccountController : Controller
     {
