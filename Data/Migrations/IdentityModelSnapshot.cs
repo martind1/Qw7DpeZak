@@ -118,7 +118,7 @@ namespace QwTest7.Data.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("Value");
+                    b.Property<string>("Display");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 

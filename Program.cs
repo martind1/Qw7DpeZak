@@ -11,10 +11,12 @@ using Microsoft.OData.ModelBuilder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Serilog;
 using Serilog.Context;
+using Serilog.Templates;
 using QwTest7;
 using QwTest7.Data;
 using QwTest7.Models;
 using QwTest7.Services;
+using System.Reflection;
 
 //md Serilog noch ohne Builder und ohne appsettings.json:
 Log.Logger = new LoggerConfiguration()
@@ -83,6 +85,7 @@ try
 
     //md Serilog:
     app.UseSerilogRequestLogging();
+    Log.Information("### Programmstart");
 
     // Configure the HTTP request pipeline.
     app.Use(async (httpContext, next) =>
@@ -123,6 +126,6 @@ catch (Exception ex)
 }
 finally
 {
-    Log.Information("Programmende");
+    Log.Information("### Programmende");
     Log.CloseAndFlush();
 }

@@ -37,6 +37,8 @@ namespace QwTest7
             }
             catch (HttpRequestException ex)
             {
+                //MD
+                throw ex;
             }
 
             var result = new AuthenticationState(new ClaimsPrincipal(identity));
