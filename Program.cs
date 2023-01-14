@@ -17,6 +17,7 @@ using QwTest7.Data;
 using QwTest7.Models;
 using QwTest7.Services;
 using System.Reflection;
+using QwTest7.Services.Kmp;
 
 //md Serilog noch ohne Builder und ohne appsettings.json:
 Log.Logger = new LoggerConfiguration()
@@ -50,8 +51,10 @@ try
     builder.Services.AddDbContext<QuvaContext>();
 
     //Blacki Quva
-    builder.Services.AddScoped<BlackiService>();
+    builder.Services.AddDbContext<KmpDbContext>();
+    builder.Services.AddScoped<KmpDbService>();
     builder.Services.AddDbContext<BlackiContext>();
+    builder.Services.AddScoped<BlackiService>();
 
     //Security
     builder.Services.AddHttpClient("QwTest7").AddHeaderPropagation(o => o.Headers.Add("Cookie"));

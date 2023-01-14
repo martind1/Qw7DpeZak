@@ -9,7 +9,7 @@ using QwTest7.Models.Blacki;
 
 namespace QwTest7.Data;
 
-public partial class BlackiContext : DbContext
+public partial class KmpDbContext : DbContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

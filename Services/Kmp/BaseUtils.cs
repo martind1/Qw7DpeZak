@@ -24,7 +24,7 @@
                 return sl;
             string[] sl1 = new string[2];
             sl1[0] = sl[0];
-            sl1[1] = str.Substring(sl[0].Length + 1);  //ohne '='
+            sl1[1] = str[(sl[0].Length + 1)..];  //ohne '='
             return sl1;
         }
 
