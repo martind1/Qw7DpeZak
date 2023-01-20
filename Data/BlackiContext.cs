@@ -14,8 +14,6 @@ public partial class BlackiContext : DbContext
 
     public virtual DbSet<FAHRZEUGE> FAHRZEUGE_Tbl { get; set; }
 
-    public virtual DbSet<FILTERABFRAGEN> FILTERABFRAGEN_Tbl { get; set; }
-
     public virtual DbSet<KARTEN> KARTEN_Tbl { get; set; }
 
     public virtual DbSet<SPEDITIONEN> SPEDITIONEN_Tbl { get; set; }
@@ -47,17 +45,6 @@ public partial class BlackiContext : DbContext
             entity.Property(e => e.WERK_NR).ValueGeneratedOnAdd();
 
             entity.HasOne(d => d.SPED).WithMany(p => p.FAHRZEUGE).HasConstraintName("FK_FRZG_SPED");
-        });
-
-        modelBuilder.Entity<FILTERABFRAGEN>(entity =>
-        {
-            entity.HasKey(e => e.FLTR_ID).HasName("PK_FLTR");
-
-            entity.Property(e => e.ANZAHL_AENDERUNGEN).ValueGeneratedOnAdd();
-            entity.Property(e => e.ERFASST_AM).ValueGeneratedOnAdd();
-            entity.Property(e => e.ERFASST_DATENBANK).ValueGeneratedOnAdd();
-            entity.Property(e => e.GEAENDERT_AM).ValueGeneratedOnAdd();
-            entity.Property(e => e.GEAENDERT_DATENBANK).ValueGeneratedOnAdd();
         });
 
         modelBuilder.Entity<KARTEN>(entity =>

@@ -1,6 +1,4 @@
-﻿using Radzen;
-using Serilog;
-using System.Security.Policy;
+﻿using Serilog;
 
 namespace QwTest7.Services.Kmp
 {
@@ -16,7 +14,7 @@ namespace QwTest7.Services.Kmp
     /// </summary>
     public partial class FltrList
     {
-        public IList<FltrListItem> Fltrs { get; set; }
+        public List<FltrListItem> Fltrs { get; set; }
 
         public FltrList()
         {

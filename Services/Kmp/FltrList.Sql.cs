@@ -317,7 +317,7 @@ namespace QwTest7.Services.Kmp
                     }
                 }
             }
-            if (DposUtils.HasFilterChar(wert))
+            if (DbUtils.HasFilterChar(wert))
             { 
                 NotFlag = operand == "<>";  //not Fld.contains..
                 if (wert.StartsWith('%') && wert.EndsWith('%'))

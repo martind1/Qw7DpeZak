@@ -5,7 +5,7 @@ using System.Reflection.Metadata;
 
 namespace QwTest7.Services.Kmp
 {
-    internal static class DposUtils
+    internal static class DbUtils
     {
         #region Feldnamen korrigieren (Groß/Klein)
 
@@ -44,6 +44,9 @@ namespace QwTest7.Services.Kmp
             propertyInfos = TEntity.GetProperties();  // BindingFlags.Public);
 
             // Formatlist laden:
+            // In Entity:
+            // [NotMapped]
+            // public IDictionary<string, string> Formatlist { get; private set; } = new Dictionary<string, string>() ...
             string constFormatlist = "Formatlist";
             bool hasFormatlist = propertyInfos.Where(x => x.Name == constFormatlist).FirstOrDefault() != null;
             var formatlist = new Dictionary<string, string>();

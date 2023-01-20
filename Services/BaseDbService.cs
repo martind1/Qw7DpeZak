@@ -7,6 +7,7 @@ using QwTest7.Data;
 using QwTest7.Models.Blacki;
 using System.Linq.Dynamic.Core;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.CodeDom;
 
 namespace QwTest7.Services
 {
@@ -147,6 +148,30 @@ namespace QwTest7.Services
             return await Task.FromResult(items);
         }
 
+        public async Task<int> EntityQueryCountAsync<T>(Query query) where T : class
+        {
+            var items = Ctx.Set<T>().AsQueryable();
+            //items = items.Include(i => i.Contact);
+            //items = items.Include(i => i.OpportunityStatus);
+            if (query != null)
+            {
+                var oldSkip = query.Skip;
+                var oldTop = query.Top;
+                try
+                {
+                    query.Skip = null;
+                    query.Top = null;
+                    items = (IQueryable<T>)QueryableFromQuery(query, items);
+                }
+                finally
+                {
+                    query.Skip = oldSkip;
+                    query.Top = oldTop;
+                }
+            }
+            return await Task.FromResult(items.Count());
+        }
+
         public async Task<T> EntityDelete<T>(T entity) where T : class
         {
             if (entity == null)
@@ -168,7 +193,6 @@ namespace QwTest7.Services
 
             return entity;
         }
-
 
         #endregion
 

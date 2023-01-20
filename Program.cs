@@ -50,9 +50,12 @@ try
     builder.Services.AddScoped<QuvaService>();
     builder.Services.AddDbContext<QuvaContext>();
 
-    //Blacki Quva
+    //MD Kmp
+    builder.Services.AddScoped<ProtService>();
     builder.Services.AddDbContext<KmpDbContext>();
     builder.Services.AddScoped<KmpDbService>();
+
+    //Blacki Quva
     builder.Services.AddDbContext<BlackiContext>();
     builder.Services.AddScoped<BlackiService>();
 

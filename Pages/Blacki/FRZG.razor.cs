@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Components;
@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using QwTest7.Models.Blacki;
 using QwTest7.Services;
 using QwTest7.Services.Kmp;
+using QwTest7.Data;
 using Serilog;
 
 namespace QwTest7.Pages.Blacki;
@@ -19,35 +20,33 @@ public partial class FRZG
 {
     [Inject]
     protected IJSRuntime JSRuntime { get; set; }
-
     [Inject]
     protected NavigationManager NavigationManager { get; set; }
-
     [Inject]
     protected DialogService DialogService { get; set; }
-
     [Inject]
     protected TooltipService TooltipService { get; set; }
-
     [Inject]
     protected ContextMenuService ContextMenuService { get; set; }
-
     [Inject]
     protected NotificationService NotificationService { get; set; }
+    [Inject]
+    protected SecurityService Security { get; set; }
 
     [Inject]
     public BlackiService BlackiService { get; set; }
-
     [Inject]
-    protected SecurityService Security { get; set; }
+    public ProtService Prot { get; set; }
 
     protected IEnumerable<FAHRZEUGE> tbl0;
     protected RadzenDataGrid<FAHRZEUGE> grid0;
 
     protected override async Task OnInitializedAsync()
     {
-        tbl0 = await BlackiService.EntityGet<FAHRZEUGE>(new Query { Expand = "SPEDITIONEN" });
+        //tbl0 = await BlackiService.EntityGet<FAHRZEUGE>(new Query { Expand = "SPEDITIONEN" });
         Log.Information($"OnInitializedAsync: {DateTime.Now}");
+        //Test:
+        StatusInit();
     }
 
     protected async Task AddButtonClick(MouseEventArgs args)
@@ -55,7 +54,8 @@ public partial class FRZG
         //await DialogService.OpenAsync<Studio.AddFahrzeuge>("Add Fahrzeuge", null);
         //await grid0.Reload();
         //Test:
-        await JSRuntime.InvokeAsync<object>("open", "speditionens", "_blank");
+        //await JSRuntime.InvokeAsync<object>("open", "speditionens", "_blank");
+        Prot.Prot0SL("Fire");
     }
 
     protected async Task EditRow(FAHRZEUGE args)
@@ -97,6 +97,57 @@ public partial class FRZG
     public Density Density = Density.Compact;
 
     IList<FAHRZEUGE> selectedList;
+
+    #endregion
+
+    #region MD Prot Test
+    public string StatusLine { get; set; }
+
+    public void StatusInit()
+    {
+        Prot.OnStatusListAdd += StatusListAdd1;
+        Prot.OnStatusListAdd += StatusListAdd2;
+    }
+
+    public void StatusListAdd1(StatusListEntry statusListEntry)
+    {
+        StatusLine += $" Add1[{statusListEntry.Date:mm:ss}]:{statusListEntry.Text}";
+    }
+
+    public void StatusListAdd2(StatusListEntry statusListEntry)
+    {
+        StatusLine += $" Add2[{statusListEntry.Date:mm:ss}]:{statusListEntry.Text}";
+    }
+    #endregion
+
+    #region LoadData
+
+    public int RecordCount = 0;
+    public bool isLoading = false;
+    [Inject]
+    private BlackiContext ctx { get; set; }
+
+    async Task LoadData(LoadDataArgs args)
+    {
+        isLoading = true;
+
+        Log.Information($"### LoadData: {args.Skip.Value} bis {args.Top.Value}");
+
+        await Task.Yield();
+
+        // This demo is using https://dynamic-linq.net
+        var query = BlackiService.QueryFromLoadDataArgs(args);
+        query.Expand = "SPEDITIONEN";
+
+        // Important!!! Make sure the Count property of RadzenDataGrid is set.
+        RecordCount = await BlackiService.EntityQueryCountAsync<FAHRZEUGE>(query);
+        Log.Information($"### LoadData: counted");
+
+        // Perform paginv via Skip and Take.
+        tbl0 = await BlackiService.EntityGet<FAHRZEUGE>(query);
+
+        isLoading = false;
+    }
 
     #endregion
 }

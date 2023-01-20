@@ -41,7 +41,7 @@ namespace QwTest7.Services.Kmp
 
         public ColumnList(string columnlist) : this()
         {
-            //fltrlist Zeile idF <ColDesc>=<FieldName>
+            //Columnlist Zeile idF <Display>[:<Width>,<[Option]*>]=<Fieldname>
             List<string> list = new(
                 columnlist.Split(new string[] { "\r\n", "\n", "\r" },
                 StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries));
@@ -112,7 +112,7 @@ namespace QwTest7.Services.Kmp
         public string SingleStyle;  //für Textbox, Numeric
 
 
-        //Spalte anhand KMP Beschreibung anlegen idF <Display>:<Width>,<[Option]*>=<Fieldname>
+        //Spalte anhand KMP Beschreibung anlegen idF <Display>[:<Width>,<[Option]*>]=<Fieldname>
         public ColumnListItem(string ColDesc)
         {
             var SL0 = ColDesc.Split('=', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);

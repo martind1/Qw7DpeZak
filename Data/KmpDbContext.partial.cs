@@ -13,15 +13,15 @@ public partial class KmpDbContext : DbContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseOracle(GetConnection().GetConnectionString("QuvaConnection"),
-            b => b.UseOracleSQLCompatibility(GetConnection()["OracleSQLCompatibility"] ?? "11"));
+        optionsBuilder.UseOracle(Conf().GetConnectionString("QuvaConnection"),
+            b => b.UseOracleSQLCompatibility(Conf()["OracleSQLCompatibility"] ?? "11"));
 
         optionsBuilder.EnableSensitiveDataLogging();
 
         base.OnConfiguring(optionsBuilder);
     }
 
-    private static IConfiguration GetConnection()
+    private static IConfiguration Conf()
     {
         var configurationBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json",
             optional: true, reloadOnChange: false);

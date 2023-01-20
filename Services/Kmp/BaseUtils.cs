@@ -1,5 +1,8 @@
 ﻿namespace QwTest7.Services.Kmp
 {
+    /// <summary>
+    /// Basis Exception für unsere Anwendung
+    /// </summary>
     [System.Serializable]
     public class KmpException : Exception
     {
@@ -11,12 +14,26 @@
           System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
 
-    // Statische Klasse mit Basis Hilfsfunktionen
+    /// <summary>
+    /// Statische Klasse mit Anwendungs Konstanten
+    /// </summary>
+    public static class AppParameter
+    {
+        //für ProtService
+        public static int MaxStatusListEntries { get; set; } = 1000;
+    }
+
+    /// <summary>
+    /// Statische Klasse mit Basis Hilfsfunktionen
+    /// </summary>
     public static class BaseUtils
     {
 
-        //Splittet String in 2 Teile. 1.Teil: Erstes Token  2.Teil: Rest
-        //Bsp: 'Fld1=a=b' -> ('Fld1', 'a=b')
+        /// <summary>
+        /// Splittet String in 2 Teile. 1.Teil: Erstes Token  2.Teil: Rest
+        /// Bsp: 'Fld1=a=b' -> ('Fld1', 'a=b')
+        /// </summary>
+        /// <returns>Stringliste mit 2 Einträgen</returns>
         public static String[] Split2(this string str, String separator, StringSplitOptions options = StringSplitOptions.None)
         {
             var sl = str.Split(separator, options);
@@ -30,7 +47,7 @@
 
         public static void Debug0()
         {
-            //macht nix
+            //macht nix. Nur für Breakpoint
         }
     }
 
