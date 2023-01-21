@@ -13,6 +13,7 @@ using QwTest7.Services;
 using QwTest7.Services.Kmp;
 using QwTest7.Data;
 using Serilog;
+using Serilog.Context;
 
 namespace QwTest7.Pages.Blacki;
 
@@ -36,6 +37,8 @@ public partial class FRZG
     [Inject]
     public BlackiService BlackiService { get; set; }
     [Inject]
+    protected GlobalService Gnav { get; set; }
+    [Inject]
     public ProtService Prot { get; set; }
 
     protected IEnumerable<FAHRZEUGE> tbl0;
@@ -43,8 +46,9 @@ public partial class FRZG
 
     protected override async Task OnInitializedAsync()
     {
-        //tbl0 = await BlackiService.EntityGet<FAHRZEUGE>(new Query { Expand = "SPEDITIONEN" });
-        Log.Information($"OnInitializedAsync: {DateTime.Now}");
+        //string clientIp = LogContext
+        //weg wg LoadData - tbl0 = await BlackiService.EntityGet<FAHRZEUGE>(new Query { Expand = "SPEDITIONEN" });
+        Log.Information($"### OnInitializedAsync User({Gnav.UserName}) IP({Gnav.IPAddress}) Maschine({Gnav.MaschineName})");
         //Test:
         StatusInit();
     }
@@ -124,8 +128,6 @@ public partial class FRZG
 
     public int RecordCount = 0;
     public bool isLoading = false;
-    [Inject]
-    private BlackiContext ctx { get; set; }
 
     async Task LoadData(LoadDataArgs args)
     {

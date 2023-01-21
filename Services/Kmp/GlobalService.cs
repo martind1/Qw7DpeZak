@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen.Blazor;
+using Serilog;
+using System.Net;
 using System.Text.Json;
 
 
@@ -25,8 +27,22 @@ namespace QwTest7.Services.Kmp
     /// </summary>
     public class GlobalService : ComponentBase
     {
-        public GlobalService() 
-        { 
+        //so nicht. Is null! [Inject] protected SecurityService Security { get; set; }
+        //public string UserName()
+        //{
+        //    string username = String.Empty;
+        //    try
+        //    {
+        //        username = Security.User.ToString();
+        //    }
+        //    catch
+        //    {
+        //    }
+        //    return string.IsNullOrEmpty(username) ? "anonymous" : username; //vergl program.cs
+        //}
+
+        public GlobalService()
+        {
             ActivePage = new PageDescription();
         }
 
@@ -45,9 +61,9 @@ namespace QwTest7.Services.Kmp
         public void GnavChanged() => OnGnavChange?.Invoke();  //Page, Eventconsole geändert. Für GlobalNavigator
 
         //für grid.PageSizeOptions
-        public IEnumerable<int> PageSizeValues { get; set; } = new int[] 
-        { 
-            10, 
+        public IEnumerable<int> PageSizeValues { get; set; } = new int[]
+        {
+            10,
             15,
             20,
             25,
@@ -59,6 +75,7 @@ namespace QwTest7.Services.Kmp
         };
 
         private int _maxRecordCount = 50;
+
         public int MaxRecordCount
         {
             get => _maxRecordCount;
@@ -68,7 +85,74 @@ namespace QwTest7.Services.Kmp
 
         #region Routing
         //Idee: navLink. Ziel: in Page-File: Navlink nl = new NavLink('SPED'), Data von JSON-DB/R_INIT
+        #endregion
 
+        #region User Infos
+        private string iPAddress;
+        private string userAgent;
+        private string maschineName;
+        private string userName = "anonymous";
+
+        public string UserAgent
+        {
+            get => userAgent;
+            set
+            {
+                if (userAgent != value)
+                    Log.Information($"### UserAgent({value})<-({userAgent})");
+                userAgent = value;
+            }
+        }
+        public string MaschineName
+        {
+            get => maschineName;
+            set
+            {
+                if (maschineName != value)
+                    Log.Information($"### MaschineName({value})<-({maschineName})");
+                maschineName = value;
+            }
+        }
+        public string UserName 
+        { 
+            get => userName;
+            set
+            {
+                if (userName != value)
+                    Log.Information($"### UserName({value})<-({userName})");
+                userName = value;
+            }
+        }
+        public string IPAddress
+        {
+            get => iPAddress;
+            set
+            {
+                if (iPAddress != value)
+                    Log.Information($"### IPAddress({value})<-({iPAddress})");
+                iPAddress = value;
+                MaschineName = GetMachineNameFromIPAddress(value);
+            }
+        }
+
+        public static string GetMachineNameFromIPAddress(string ipAddress)
+        {
+            string machineName;
+            try
+            {
+                IPHostEntry hostEntry = Dns.GetHostEntry(ipAddress);
+
+                machineName = hostEntry.HostName;
+                machineName = machineName.Split('.')[0];  //blacki.sand.int -> blacki
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"GetMachineNameFromIPAddress({ipAddress})", ex);
+                // Machine not found...
+                machineName = ipAddress;
+            }
+            return machineName;
+        }
 
 
         #endregion

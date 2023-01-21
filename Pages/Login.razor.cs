@@ -50,7 +50,8 @@ namespace QwTest7.Pages
             info = query.Get("info");
 
             redirectUrl = query.Get("redirectUrl");
-            Log.Information($"redirectUrl={redirectUrl}");
+            if (!string.IsNullOrEmpty(redirectUrl)) 
+                Log.Information($"### redirectUrl={redirectUrl}");
             errorVisible = !string.IsNullOrEmpty(error);
 
             infoVisible = !string.IsNullOrEmpty(info);

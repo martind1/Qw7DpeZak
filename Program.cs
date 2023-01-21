@@ -51,6 +51,7 @@ try
     builder.Services.AddDbContext<QuvaContext>();
 
     //MD Kmp
+    builder.Services.AddScoped<GlobalService>();
     builder.Services.AddScoped<ProtService>();
     builder.Services.AddDbContext<KmpDbContext>();
     builder.Services.AddScoped<KmpDbService>();
@@ -102,7 +103,10 @@ try
 
         //Get remote IP address  
         var ip = httpContext.Connection.RemoteIpAddress.ToString();
-        LogContext.PushProperty("IP", !String.IsNullOrWhiteSpace(ip) ? ip : "unknown");
+        ip = !string.IsNullOrWhiteSpace(ip) ? ip : "unknown";
+        LogContext.PushProperty("IP", ip);
+
+        LogContext.PushProperty("Maschine", GlobalService.GetMachineNameFromIPAddress(ip));
 
         await next.Invoke();
     });

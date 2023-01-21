@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using QwTest7.Models;
+using Serilog;
 
 namespace QwTest7.Controllers
 {
@@ -36,6 +37,7 @@ namespace QwTest7.Controllers
 
         private IActionResult RedirectWithError(string error, string redirectUrl = null)
         {
+            //hier noch kein Log - Log.Warning($"### Login Error({error})");
              if (!string.IsNullOrEmpty(redirectUrl))
              {
                  return Redirect($"~/Login?error={error}&redirectUrl={Uri.EscapeDataString(redirectUrl)}");
@@ -49,6 +51,7 @@ namespace QwTest7.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string userName, string password, string redirectUrl)
         {
+            //hier noch kein Log - Log.Information($"### Login User({userName}) Redirect({redirectUrl})");
             if (env.EnvironmentName == "Development" && userName == "admin" && password == "admin")
             {
                 var claims = new List<Claim>()
