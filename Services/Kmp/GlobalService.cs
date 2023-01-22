@@ -4,7 +4,6 @@ using Serilog;
 using System.Net;
 using System.Text.Json;
 
-
 namespace QwTest7.Services.Kmp
 {
     public enum PageMode
@@ -22,9 +21,14 @@ namespace QwTest7.Services.Kmp
         Inactive, Browse, Edit, Insert, Query
     }
 
+    //so nicht - public interface IGlobalService
+    //{
+    //    string GetConstructorParameter();
+    //}
+    
     /// <summary>
-    /// Service für globale Navigation
-    /// </summary>
+         /// Service für globale Navigation
+         /// </summary>
     public class GlobalService : ComponentBase
     {
         //so nicht. Is null! [Inject] protected SecurityService Security { get; set; }
@@ -44,7 +48,18 @@ namespace QwTest7.Services.Kmp
         public GlobalService()
         {
             ActivePage = new PageDescription();
+            AnweKennung = BaseUtils.ReadSetting("AnweKennung", "NoAnwe");  //QUVA
         }
+
+        //so nicht - public GlobalService(string anweKennung)
+        //{
+        //    ActivePage = new PageDescription();
+        //    AnweKennung= anweKennung;
+        //}
+        //public string GetConstructorParameter()
+        //{
+        //    return anweKennung;
+        //}
 
         public event Action<KommandoTyp> OnDoKommando;
         private void DoKommando(KommandoTyp Kommando) => OnDoKommando?.Invoke(Kommando);
@@ -88,11 +103,22 @@ namespace QwTest7.Services.Kmp
         #endregion
 
         #region User Infos
-        private string iPAddress;
+        private string anweKennung;
         private string userAgent;
         private string maschineName;
         private string userName = "anonymous";
+        private string iPAddress;
 
+        public string AnweKennung
+        {
+            get => anweKennung;
+            set
+            {
+                if (anweKennung != value)
+                    Log.Information($"### AnweKennung({value})<-({anweKennung})");
+                anweKennung = value;
+            }
+        }
         public string UserAgent
         {
             get => userAgent;

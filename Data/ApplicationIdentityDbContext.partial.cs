@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 
 using QwTest7.Models;
 using System.Reflection.Emit;
+using QwTest7.Services.Kmp;
 
 namespace QwTest7.Data
 {
@@ -15,25 +16,13 @@ namespace QwTest7.Data
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseOracle(GetConnection().GetConnectionString("QuvaConnection"),
-                b => b.UseOracleSQLCompatibility(GetConnection()["OracleSQLCompatibility"] ?? "11"));
+            optionsBuilder.UseOracle(BaseUtils.Appsettings().GetConnectionString("QuvaConnection"),
+                b => b.UseOracleSQLCompatibility(BaseUtils.Appsettings()["OracleSQLCompatibility"] ?? "11"));
 
             optionsBuilder.EnableSensitiveDataLogging();
 
             base.OnConfiguring(optionsBuilder);
         }
 
-        private static IConfiguration GetConnection()
-        {
-            var configurationBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json",
-                optional: true, reloadOnChange: false);
-            return configurationBuilder.Build();
-        }
-
-        partial void OnModelBuilding(ModelBuilder builder)
-        {
-            //Kompatibilität mit Ora 11g
-            //builder.Model.SetMaxIdentifierLength(30);
-        }
     }
 }

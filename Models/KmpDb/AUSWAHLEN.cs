@@ -7,40 +7,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace QwTest7.Models.KmpDb;
 
-[Table("FILTERABFRAGEN")]
-[Index("ANWE", "FORM", "NAME", Name = "UK_FLTR", IsUnique = true)]
-public partial class FILTERABFRAGEN
+[Table("AUSWAHLEN")]
+[Index("ASW_NAME", "ITEM_POS", Name = "UK1_ASWS", IsUnique = true)]
+public partial class AUSWAHLEN
 {
-    [Required]
-    [StringLength(20)]
-    [Unicode(false)]
-    public string ANWE { get; set; }
-
-    [Required]
-    [StringLength(20)]
-    [Unicode(false)]
-    public string FORM { get; set; }
-
-    [Required]
-    [StringLength(80)]
-    [Unicode(false)]
-    public string NAME { get; set; }
-
-    [StringLength(250)]
-    [Unicode(false)]
-    public string FLTRLIST { get; set; }
-
-    [StringLength(80)]
-    [Unicode(false)]
-    public string KEYFIELDS { get; set; }
-
-    [StringLength(1)]
-    [Unicode(false)]
-    public string ISPUBLIC { get; set; }
-
     [Key]
     [Precision(9)]
-    public int FLTR_ID { get; set; }
+    public int ASWS_ID { get; set; }
+
+    [Required]
+    [StringLength(30)]
+    [Unicode(false)]
+    public string ASW_NAME { get; set; }
+
+    [Column(TypeName = "NUMBER(38)")]
+    public decimal ITEM_POS { get; set; }
+
+    [StringLength(80)]
+    [Unicode(false)]
+    public string ITEM_VALUE { get; set; }
+
+    [StringLength(80)]
+    [Unicode(false)]
+    public string ITEM_DISPLAY { get; set; }
 
     [StringLength(30)]
     [Unicode(false)]
@@ -70,8 +59,4 @@ public partial class FILTERABFRAGEN
     [StringLength(2000)]
     [Unicode(false)]
     public string BEMERKUNG { get; set; }
-
-    [StringLength(2000)]
-    [Unicode(false)]
-    public string COLUMNLIST { get; set; }
 }

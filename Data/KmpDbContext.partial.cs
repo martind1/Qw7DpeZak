@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
+using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Options;
-using QwTest7.Models.Blacki;
+using QwTest7.Services.Kmp;
 
 namespace QwTest7.Data;
 
@@ -13,20 +14,20 @@ public partial class KmpDbContext : DbContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseOracle(Conf().GetConnectionString("QuvaConnection"),
-            b => b.UseOracleSQLCompatibility(Conf()["OracleSQLCompatibility"] ?? "11"));
+        optionsBuilder.UseOracle(BaseUtils.Appsettings().GetConnectionString("QusyConnection"),
+            b => b.UseOracleSQLCompatibility(BaseUtils.Appsettings()["OracleSQLCompatibility"] ?? "11"));
 
         optionsBuilder.EnableSensitiveDataLogging();
 
         base.OnConfiguring(optionsBuilder);
     }
 
-    private static IConfiguration Conf()
-    {
-        var configurationBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json",
-            optional: true, reloadOnChange: false);
-        return configurationBuilder.Build();
-    }
+    //private static IConfiguration Conf()
+    //{
+    //    var configurationBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json",
+    //        optional: true, reloadOnChange: false);
+    //    return configurationBuilder.Build();
+    //}
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
     {

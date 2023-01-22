@@ -7,40 +7,43 @@ using Microsoft.EntityFrameworkCore;
 
 namespace QwTest7.Models.KmpDb;
 
-[Table("FILTERABFRAGEN")]
-[Index("ANWE", "FORM", "NAME", Name = "UK_FLTR", IsUnique = true)]
-public partial class FILTERABFRAGEN
+[Table("INITIALISIERUNGEN")]
+[Index("ANWENDUNG", "TYP", "NAME", "SECTION", "PARAM", Name = "UK_INIT", IsUnique = true)]
+public partial class INITIALISIERUNGEN
 {
     [Required]
-    [StringLength(20)]
+    [StringLength(30)]
     [Unicode(false)]
-    public string ANWE { get; set; }
+    public string ANWENDUNG { get; set; }
 
     [Required]
-    [StringLength(20)]
+    [StringLength(1)]
     [Unicode(false)]
-    public string FORM { get; set; }
+    public string TYP { get; set; }
 
     [Required]
-    [StringLength(80)]
+    [StringLength(30)]
     [Unicode(false)]
     public string NAME { get; set; }
 
-    [StringLength(250)]
+    [Required]
+    [StringLength(255)]
     [Unicode(false)]
-    public string FLTRLIST { get; set; }
+    public string SECTION { get; set; }
 
-    [StringLength(80)]
+    [Required]
+    [StringLength(255)]
     [Unicode(false)]
-    public string KEYFIELDS { get; set; }
+    public string PARAM { get; set; }
 
-    [StringLength(1)]
+    [Required]
+    [StringLength(255)]
     [Unicode(false)]
-    public string ISPUBLIC { get; set; }
+    public string WERT { get; set; }
 
     [Key]
     [Precision(9)]
-    public int FLTR_ID { get; set; }
+    public int INIT_ID { get; set; }
 
     [StringLength(30)]
     [Unicode(false)]
@@ -70,8 +73,4 @@ public partial class FILTERABFRAGEN
     [StringLength(2000)]
     [Unicode(false)]
     public string BEMERKUNG { get; set; }
-
-    [StringLength(2000)]
-    [Unicode(false)]
-    public string COLUMNLIST { get; set; }
 }

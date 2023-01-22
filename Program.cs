@@ -51,6 +51,7 @@ try
     builder.Services.AddDbContext<QuvaContext>();
 
     //MD Kmp
+    //so nicht - builder.Services.AddScoped<IGlobalService>(a => new GlobalService("QUVA"));
     builder.Services.AddScoped<GlobalService>();
     builder.Services.AddScoped<ProtService>();
     builder.Services.AddDbContext<KmpDbContext>();
@@ -80,13 +81,7 @@ try
     });
     builder.Services.AddScoped<AuthenticationStateProvider, ApplicationAuthenticationStateProvider>();
 
-    //Studio Qusy
-    builder.Services.AddScoped<QusyService>();
-    builder.Services.AddDbContext<QusyContext>(options =>
-    {
-        options.UseOracle(builder.Configuration.GetConnectionString("QusyConnection"), b => b.UseOracleSQLCompatibility("11"));
-    });
-
+    //Studio Qusy -> Kmp
 
     var app = builder.Build();
 

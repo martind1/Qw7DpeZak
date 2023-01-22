@@ -7,40 +7,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace QwTest7.Models.KmpDb;
 
-[Table("FILTERABFRAGEN")]
-[Index("ANWE", "FORM", "NAME", Name = "UK_FLTR", IsUnique = true)]
-public partial class FILTERABFRAGEN
+[Table("DATEIEN")]
+[Index("ORDNER", "FILENAME", Name = "UK_DATN", IsUnique = true)]
+public partial class DATEIEN
 {
     [Required]
-    [StringLength(20)]
+    [StringLength(255)]
     [Unicode(false)]
-    public string ANWE { get; set; }
+    public string ORDNER { get; set; }
 
     [Required]
-    [StringLength(20)]
+    [StringLength(255)]
     [Unicode(false)]
-    public string FORM { get; set; }
+    public string FILENAME { get; set; }
 
-    [Required]
-    [StringLength(80)]
-    [Unicode(false)]
-    public string NAME { get; set; }
+    [Column(TypeName = "DATE")]
+    public DateTime? FILETIME { get; set; }
 
-    [StringLength(250)]
-    [Unicode(false)]
-    public string FLTRLIST { get; set; }
-
-    [StringLength(80)]
-    [Unicode(false)]
-    public string KEYFIELDS { get; set; }
-
-    [StringLength(1)]
-    [Unicode(false)]
-    public string ISPUBLIC { get; set; }
+    [Column(TypeName = "BLOB")]
+    public byte[] INHALT { get; set; }
 
     [Key]
     [Precision(9)]
-    public int FLTR_ID { get; set; }
+    public int DATN_ID { get; set; }
 
     [StringLength(30)]
     [Unicode(false)]
@@ -49,7 +38,7 @@ public partial class FILTERABFRAGEN
     [Column(TypeName = "DATE")]
     public DateTime? ERFASST_AM { get; set; }
 
-    [StringLength(30)]
+    [StringLength(80)]
     [Unicode(false)]
     public string ERFASST_DATENBANK { get; set; }
 
@@ -60,7 +49,7 @@ public partial class FILTERABFRAGEN
     [Column(TypeName = "DATE")]
     public DateTime? GEAENDERT_AM { get; set; }
 
-    [StringLength(30)]
+    [StringLength(80)]
     [Unicode(false)]
     public string GEAENDERT_DATENBANK { get; set; }
 
@@ -70,8 +59,4 @@ public partial class FILTERABFRAGEN
     [StringLength(2000)]
     [Unicode(false)]
     public string BEMERKUNG { get; set; }
-
-    [StringLength(2000)]
-    [Unicode(false)]
-    public string COLUMNLIST { get; set; }
 }
