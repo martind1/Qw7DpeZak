@@ -40,6 +40,8 @@ public partial class FRZG
     protected GlobalService Gnav { get; set; }
     [Inject]
     public ProtService Prot { get; set; }
+    [Inject]
+    public IniDbService Ini { get; set; }
 
     protected IEnumerable<FAHRZEUGE> tbl0;
     protected RadzenDataGrid<FAHRZEUGE> grid0;
@@ -150,6 +152,24 @@ public partial class FRZG
 
         isLoading = false;
     }
+
+    #endregion
+
+    #region Test Ini
+
+    private string PageName = "FRZG";
+    public int PageSize { get; set; } = 15;
+
+    public void IniInit()
+    {
+        PageSize = Ini.ReadItem("PAGESTATUS." + PageName, "PAGESIZE", 14);
+    }
+
+    public void SavePageSize(int pagesize)
+    {
+        Ini.WriteItem("PAGESTATUS." + PageName, "PAGESIZE", pagesize);
+    }
+
 
     #endregion
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Serilog;
+using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Data.Entity;
 using Radzen;
@@ -11,6 +12,10 @@ using DocumentFormat.OpenXml.InkML;
 using QwTest7.Services.Kmp;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace QwTest7.Services.Kmp
 {
@@ -19,20 +24,15 @@ namespace QwTest7.Services.Kmp
     /// </summary>
     public partial class KmpDbService : BaseDbService
     {
-        //todo: KmpDbContext
-        public KmpDbService(KmpDbContext ctx, NavigationManager navigationManager, GlobalService gnav) :
+        public KmpDbService(KmpDbContext ctx, NavigationManager navigationManager) :
             base(ctx, navigationManager)
         {
-            Gnav = gnav;
         }
 
         public KmpDbContext AppCtx()
         {
             return (KmpDbContext)Ctx;
         }
-
-        GlobalService Gnav { get; set; }
-
 
         #region FILTERABFRAGEN
 
@@ -59,48 +59,108 @@ namespace QwTest7.Services.Kmp
 
         #region IniDB
 
-        private IEnumerable<INITIALISIERUNGEN> iniDB;
-        protected IEnumerable<INITIALISIERUNGEN> IniDB { get => iniDB ?? LoadInidb(); set => iniDB = value; }
-
         /// <summary>
-        /// ergibt Tabelle der für diesen User/Maschine/Anwendung/Vorgabe vorhandenen Einträge
+        /// ergibt Liste der für diesen User/Maschine/Anwendung/Vorgabe vorhandenen Einträge: SECTION, PARAM, WERT
         /// select distinct ANWENDUNG, TYP, NAME, SECTION from QUSY.INITIALISIERUNGEN R_INIT
         ///  where (ANWENDUNG = 'QUVAE')
         ///    and ((TYP = 'A') 
         ///     or  ((TYP = 'M') and (NAME = '0120')) 
         ///     or  ((TYP = 'U') and (NAME = 'MDAMBACH')) 
         ///     or  ((TYP = 'V') and (NAME LIKE '%')))
-        ///  order by SECTION
-
-        /// </summary>
-        /// <returns></returns>
-        protected IEnumerable<INITIALISIERUNGEN> LoadInidb()
+        ///  order by TYP
+        public IDictionary<IniKeyEntry, string> GetIniList(string anwekennung, SecTyp sectyp, string ininame)
         {
             var query = new Query();
-            query.Filter = "FORM = @0 and NAME = @1";
-            query.FilterParameters = new object[] { Gnav.AnweKennung, Gnav.MaschineName, Gnav.UserName };
-
-
+            string sectypstr = SecTypToString(sectyp);
+            if (sectyp == SecTyp.Maschine || sectyp == SecTyp.User)
+            {
+                query.Filter = "ANWENDUNG = @0 and TYP = @1 and NAME = @2";
+                query.FilterParameters = new object[] { anwekennung, sectypstr, ininame };
+            }
+            else
+            {
+                query.Filter = "ANWENDUNG = @0 and TYP = @1";
+                query.FilterParameters = new object[] { anwekennung, sectypstr };
+            }
+            query.OrderBy = "SECTION, INIT_ID";
             var items = (IQueryable<INITIALISIERUNGEN>)QueryableFromQuery(query, AppCtx().INITIALISIERUNGEN_Tbl);
-            iniDB = items.ToList();
-            return iniDB;
+            var dic = new Dictionary<IniKeyEntry, string>();
+            foreach (var item in items)
+            {
+                try
+                {
+                    dic.Add(new IniKeyEntry(item.SECTION, item.PARAM), item.WERT);
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning($"GetIniList({anwekennung},{sectyp},{ininame}) ({item.SECTION}, {item.PARAM}, {item.WERT})", ex);
+                }
+            }
+            return dic;
         }
 
-
-
-        public string ReadItem(string section, string ident, string dflt)
+        public void SaveIni(INITIALISIERUNGEN ini)
         {
-            return section + ident + dflt;
-            //todo:linq
+            var query = new Query();
+            SecTyp sectyp = StringToSecTyp(ini.TYP);
+            if (sectyp == SecTyp.Maschine || sectyp == SecTyp.User)
+            {
+                query.Filter = "ANWENDUNG = @0 and TYP = @1 and NAME = @2 and SECTION = @3 and PARAM = @4";
+                query.FilterParameters = new object[] { ini.ANWENDUNG, ini.TYP, ini.NAME, ini.SECTION, ini.PARAM};
+            }
+            else
+            {
+                query.Filter = "ANWENDUNG = @0 and TYP = @1 and SECTION = @2 and PARAM = @3";
+                query.FilterParameters = new object[] { ini.ANWENDUNG, ini.TYP, ini.SECTION, ini.PARAM };
+            }
+            var items = (IQueryable<INITIALISIERUNGEN>)QueryableFromQuery(query, AppCtx().INITIALISIERUNGEN_Tbl);
+            var item = items.FirstOrDefault();
+            if (item == null) 
+            {
+                //erfassen
+            }
+            else
+            {
+                //ändern
+            }
         }
 
-        public int ReadItem(string section, string ident, int dflt)
+        public static string SecTypToString(SecTyp sectyp)
         {
-            return int.Parse(ident) + dflt + int.Parse(section);
-            //todo:linq
+            return Convert.ToChar(int.Parse(sectyp.ToString("D"))).ToString();  //User->85->'U'->"U"
+        }
+
+        public static SecTyp StringToSecTyp(string str)
+        {
+            //"U"->'U'->85->User
+            byte[] asciiBytes = Encoding.ASCII.GetBytes(str);
+            return (SecTyp)asciiBytes[0];
         }
 
         #endregion
 
     }
+
+    public enum SecTyp
+    {
+        Anwendung = 'A',
+        Maschine = 'M',
+        User = 'U',
+        Vorgabe = 'V'
+    }
+
+    public partial class IniKeyEntry
+    {
+        public string SECTION { get; set; }
+        public string PARAM { get; set; }
+        //public string WERT { get; set; }
+
+        public IniKeyEntry(string section, string param)
+        {
+            SECTION = section;
+            PARAM = param;
+            //WERT = wert;
+        }
+    }
+
 }

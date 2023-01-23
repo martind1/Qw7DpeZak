@@ -49,6 +49,7 @@ namespace QwTest7.Services.Kmp
         {
             ActivePage = new PageDescription();
             AnweKennung = BaseUtils.ReadSetting("AnweKennung", "NoAnwe");  //QUVA
+            anweLogged = false;
         }
 
         //so nicht - public GlobalService(string anweKennung)
@@ -103,7 +104,15 @@ namespace QwTest7.Services.Kmp
         #endregion
 
         #region User Infos
+        public event Action OnAnweChanged;
+        private void AnweChanged() => OnAnweChanged?.Invoke();
+        public event Action OnMaschineChanged;
+        private void MaschineChanged() => OnMaschineChanged?.Invoke();
+        public event Action OnUserChanged;
+        private void UserChanged() => OnUserChanged?.Invoke();
+
         private string anweKennung;
+        private bool anweLogged = false;
         private string userAgent;
         private string maschineName;
         private string userName = "anonymous";
@@ -115,7 +124,11 @@ namespace QwTest7.Services.Kmp
             set
             {
                 if (anweKennung != value)
+                {
                     Log.Information($"### AnweKennung({value})<-({anweKennung})");
+                    AnweChanged();  //Ereignis für Ini
+                }
+                anweLogged = true;
                 anweKennung = value;
             }
         }
@@ -135,7 +148,10 @@ namespace QwTest7.Services.Kmp
             set
             {
                 if (maschineName != value)
+                {
                     Log.Information($"### MaschineName({value})<-({maschineName})");
+                    MaschineChanged();  //Ereignis für Ini
+                }
                 maschineName = value;
             }
         }
@@ -145,7 +161,10 @@ namespace QwTest7.Services.Kmp
             set
             {
                 if (userName != value)
+                {
                     Log.Information($"### UserName({value})<-({userName})");
+                    UserChanged();  //Ereignis für Ini
+                }
                 userName = value;
             }
         }
@@ -154,6 +173,12 @@ namespace QwTest7.Services.Kmp
             get => iPAddress;
             set
             {
+                if (!anweLogged)
+                {
+                    Log.Information($"### AnweKennung({AnweKennung})");
+                    AnweChanged();  //Ereignis für Ini
+                }
+                anweLogged = true;
                 if (iPAddress != value)
                     Log.Information($"### IPAddress({value})<-({iPAddress})");
                 iPAddress = value;

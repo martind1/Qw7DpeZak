@@ -56,6 +56,7 @@ try
     builder.Services.AddScoped<ProtService>();
     builder.Services.AddDbContext<KmpDbContext>();
     builder.Services.AddScoped<KmpDbService>();
+    builder.Services.AddScoped<IniDbService>();
 
     //Blacki Quva
     builder.Services.AddDbContext<BlackiContext>();
