@@ -49,7 +49,7 @@ public partial class FRZG
     protected override async Task OnInitializedAsync()
     {
         //string clientIp = LogContext
-        //weg wg LoadData - tbl0 = await BlackiService.EntityGet<FAHRZEUGE>(new Query { Expand = "SPEDITIONEN" });
+        //weg wg LoadData - tbl0 = await BlackiService.EntityGetAsync<FAHRZEUGE>(new Query { Expand = "SPED" });
         Log.Information($"### OnInitializedAsync User({Gnav.UserName}) IP({Gnav.IPAddress}) Maschine({Gnav.MaschineName})");
         //Test:
         StatusInit();
@@ -95,17 +95,6 @@ public partial class FRZG
             });
         }
     }
-    #region MD Grid decoration
-
-    public IEnumerable<int> pageSizeOptions { get; set; } = new int[] { 10, 20, 30 };
-    public bool showPagerSummary = true;
-    public string pagingSummaryFormat = "Seite {0} von {1} ({2} Datensätze)";
-    public Density Density = Density.Compact;
-
-    IList<FAHRZEUGE> selectedList;
-
-    #endregion
-
     #region MD Prot Test
     public string StatusLine { get; set; }
 
@@ -141,17 +130,29 @@ public partial class FRZG
 
         // This demo is using https://dynamic-linq.net
         var query = BlackiService.QueryFromLoadDataArgs(args);
-        query.Expand = "SPEDITIONEN";
+        query.Expand = "SPED";
+
+        // Perform paginv via Skip and Take.
+        tbl0 = await BlackiService.EntityGetAsync<FAHRZEUGE>(query);
+        Log.Information($"### LoadData: loaded");
 
         // Important!!! Make sure the Count property of RadzenDataGrid is set.
         RecordCount = await BlackiService.EntityQueryCountAsync<FAHRZEUGE>(query);
         Log.Information($"### LoadData: counted");
 
-        // Perform paginv via Skip and Take.
-        tbl0 = await BlackiService.EntityGet<FAHRZEUGE>(query);
-
         isLoading = false;
     }
+
+    #endregion
+
+    #region MD Grid decoration
+
+    public IEnumerable<int> pageSizeOptions { get; set; } = new int[] { 10, 20, 30 };
+    public bool showPagerSummary = true;
+    public string pagingSummaryFormat = "Seite {0} von {1} ({2} Datensätze)";
+    public Density Density = Density.Compact;
+
+    IList<FAHRZEUGE> selectedList;
 
     #endregion
 

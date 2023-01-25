@@ -28,8 +28,7 @@
                         Data="@tbl0"
                         TItem="FAHRZEUGE"
                         SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedList
-                        LoadData="@LoadData" Count="@RecordCount" IsLoading=@isLoading
-                        >
+                        LoadData="@LoadData" Count="@RecordCount" IsLoading=@isLoading>
             <Columns>
                 <RadzenDataGridColumn TItem="FAHRZEUGE" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
                     <Template Context="FAHRZEUGE">
@@ -76,7 +75,9 @@
                 </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="FAHRZEUGE" Property="FLAGS" Title="FLAGS">
                 </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="SPEDITIONEN.SPEDNAME" Title="Speditionen">
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="SPED_ID" Title="SPED_ID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="SPED.SPED_NAME" Title="Speditionen">
                 </RadzenDataGridColumn>
             </Columns>
         </RadzenDataGrid>

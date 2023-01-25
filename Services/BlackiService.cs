@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Data.Entity;
 using Radzen;
-using Query = Radzen.Query;
 using QwTest7.Data;
 using QwTest7.Models.Blacki;
 using System.Linq.Dynamic.Core;
@@ -24,7 +23,5 @@ namespace QwTest7.Services
         {
             return (BlackiContext)Ctx;
         }
-
-
     }
 }

@@ -48,7 +48,8 @@ namespace QwTest7.Services.Kmp
         public GlobalService()
         {
             ActivePage = new PageDescription();
-            AnweKennung = BaseUtils.ReadSetting("AnweKennung", "NoAnwe");  //QUVA
+            AnweKennung = BaseUtils.ReadSetting("AnweKennung", "NoAnwe");  //QUVAR3
+            IniAnwe = BaseUtils.ReadSetting("IniAnwe", "NoIniAnwe");  //QUVAE
             anweLogged = false;
         }
 
@@ -106,18 +107,24 @@ namespace QwTest7.Services.Kmp
         #region User Infos
         public event Action OnAnweChanged;
         private void AnweChanged() => OnAnweChanged?.Invoke();
+        public event Action OnIniAnweChanged;
+        private void IniAnweChanged() => OnIniAnweChanged?.Invoke();
         public event Action OnMaschineChanged;
         private void MaschineChanged() => OnMaschineChanged?.Invoke();
         public event Action OnUserChanged;
         private void UserChanged() => OnUserChanged?.Invoke();
 
         private string anweKennung;
+        private string iniAnwe;
         private bool anweLogged = false;
         private string userAgent;
         private string maschineName;
         private string userName = "anonymous";
         private string iPAddress;
 
+        /// <summary>
+        /// die Werte werden im Constructor von appsettings.json bestimmt
+        /// </summary>
         public string AnweKennung
         {
             get => anweKennung;
@@ -132,6 +139,22 @@ namespace QwTest7.Services.Kmp
                 anweKennung = value;
             }
         }
+        public string IniAnwe
+        {
+            get => iniAnwe;
+            set
+            {
+                if (iniAnwe != value)
+                {
+                    Log.Information($"### IniAnwe({value})<-({iniAnwe})");
+                    IniAnweChanged();  //Ereignis für Ini
+                }
+                iniAnwe = value;
+            }
+        }
+        /// <summary>
+        /// die Werte werden in Index.razor.cs hierher geschrieben
+        /// </summary>
         public string UserAgent
         {
             get => userAgent;
@@ -175,7 +198,7 @@ namespace QwTest7.Services.Kmp
             {
                 if (!anweLogged)
                 {
-                    Log.Information($"### AnweKennung({AnweKennung})");
+                    Log.Debug($"### AnweKennung({AnweKennung})");
                     AnweChanged();  //Ereignis für Ini
                 }
                 anweLogged = true;

@@ -44,7 +44,7 @@ namespace QwTest7.Services.Kmp
                 Filter = "FORM = @0 and NAME = @1",
                 FilterParameters = new object[] { formkurz, abfrage }
             };
-            var items = (IQueryable<FILTERABFRAGEN>)QueryableFromQuery(query, AppCtx().FILTERABFRAGEN_Tbl);
+            var items = QueryableFromQuery<FILTERABFRAGEN>(query, AppCtx().FILTERABFRAGEN_Tbl);
             var fltr = items.FirstOrDefault();
             //Neuladen erzwingen:
             if (fltr != null)
@@ -68,42 +68,32 @@ namespace QwTest7.Services.Kmp
         ///     or  ((TYP = 'U') and (NAME = 'MDAMBACH')) 
         ///     or  ((TYP = 'V') and (NAME LIKE '%')))
         ///  order by TYP
-        public IDictionary<IniKeyEntry, string> GetIniList(string anwekennung, SecTyp sectyp, string ininame)
+        public IQueryable<INITIALISIERUNGEN> GetInitialisierungen(string anwekennung, string sectyp, string ininame)
         {
             var query = new Query();
-            string sectypstr = SecTypToString(sectyp);
-            if (sectyp == SecTyp.Maschine || sectyp == SecTyp.User)
+            if (sectyp == "M" || sectyp == "U")
             {
                 query.Filter = "ANWENDUNG = @0 and TYP = @1 and NAME = @2";
-                query.FilterParameters = new object[] { anwekennung, sectypstr, ininame };
+                query.FilterParameters = new object[] { anwekennung, sectyp, ininame };
             }
             else
             {
                 query.Filter = "ANWENDUNG = @0 and TYP = @1";
-                query.FilterParameters = new object[] { anwekennung, sectypstr };
+                query.FilterParameters = new object[] { anwekennung, sectyp };
             }
             query.OrderBy = "SECTION, INIT_ID";
-            var items = (IQueryable<INITIALISIERUNGEN>)QueryableFromQuery(query, AppCtx().INITIALISIERUNGEN_Tbl);
-            var dic = new Dictionary<IniKeyEntry, string>();
-            foreach (var item in items)
-            {
-                try
-                {
-                    dic.Add(new IniKeyEntry(item.SECTION, item.PARAM), item.WERT);
-                }
-                catch (Exception ex)
-                {
-                    Log.Warning($"GetIniList({anwekennung},{sectyp},{ininame}) ({item.SECTION}, {item.PARAM}, {item.WERT})", ex);
-                }
-            }
-            return dic;
+            var items = QueryableFromQuery<INITIALISIERUNGEN>(query, AppCtx().INITIALISIERUNGEN_Tbl);
+            return items;
         }
 
-        public void SaveIni(INITIALISIERUNGEN ini)
+        /// <summary>
+        /// Insert oder Update ein Ini Eintrag
+        /// </summary>
+        /// <param name="ini"></param>
+        public void SaveInitialisierungen(INITIALISIERUNGEN ini)
         {
             var query = new Query();
-            SecTyp sectyp = StringToSecTyp(ini.TYP);
-            if (sectyp == SecTyp.Maschine || sectyp == SecTyp.User)
+            if (ini.TYP == "M" || ini.TYP == "U")
             {
                 query.Filter = "ANWENDUNG = @0 and TYP = @1 and NAME = @2 and SECTION = @3 and PARAM = @4";
                 query.FilterParameters = new object[] { ini.ANWENDUNG, ini.TYP, ini.NAME, ini.SECTION, ini.PARAM};
@@ -113,54 +103,23 @@ namespace QwTest7.Services.Kmp
                 query.Filter = "ANWENDUNG = @0 and TYP = @1 and SECTION = @2 and PARAM = @3";
                 query.FilterParameters = new object[] { ini.ANWENDUNG, ini.TYP, ini.SECTION, ini.PARAM };
             }
-            var items = (IQueryable<INITIALISIERUNGEN>)QueryableFromQuery(query, AppCtx().INITIALISIERUNGEN_Tbl);
-            var item = items.FirstOrDefault();
+            var item = EntityGet<INITIALISIERUNGEN>(query).FirstOrDefault();
+
             if (item == null) 
             {
                 //erfassen
+                EntityAdd<INITIALISIERUNGEN>(ini);
             }
             else
             {
                 //ändern
+                item.WERT = ini.WERT;
+                EntityUpdate<INITIALISIERUNGEN>(ini);
             }
-        }
-
-        public static string SecTypToString(SecTyp sectyp)
-        {
-            return Convert.ToChar(int.Parse(sectyp.ToString("D"))).ToString();  //User->85->'U'->"U"
-        }
-
-        public static SecTyp StringToSecTyp(string str)
-        {
-            //"U"->'U'->85->User
-            byte[] asciiBytes = Encoding.ASCII.GetBytes(str);
-            return (SecTyp)asciiBytes[0];
         }
 
         #endregion
 
-    }
-
-    public enum SecTyp
-    {
-        Anwendung = 'A',
-        Maschine = 'M',
-        User = 'U',
-        Vorgabe = 'V'
-    }
-
-    public partial class IniKeyEntry
-    {
-        public string SECTION { get; set; }
-        public string PARAM { get; set; }
-        //public string WERT { get; set; }
-
-        public IniKeyEntry(string section, string param)
-        {
-            SECTION = section;
-            PARAM = param;
-            //WERT = wert;
-        }
     }
 
 }

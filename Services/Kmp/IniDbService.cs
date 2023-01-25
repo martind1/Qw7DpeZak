@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.AspNetCore.Components;
 using QwTest7.Models.KmpDb;
+using Serilog;
 using System.Globalization;
+using System.Linq;
+using System.Text;
 
 namespace QwTest7.Services.Kmp
 {
@@ -10,10 +14,10 @@ namespace QwTest7.Services.Kmp
         private IDictionary<IniKeyEntry, string> maschineList = null;
         private IDictionary<IniKeyEntry, string> userList = null;
         private IDictionary<IniKeyEntry, string> vorgabeList = null;
-        private string anwe = null;
-        private string maschine = null;
-        private string user = null;
-        private string vorgabe = null;  //n.b. für spätere Erweiterung
+        public string Anwe = null;
+        public string Maschine = null;
+        public string User = null;
+        public string Vorgabe = null;  //n.b. für spätere Erweiterung
 
         public IniDbService(KmpDbService svc, GlobalService gnav)
         {
@@ -22,6 +26,9 @@ namespace QwTest7.Services.Kmp
             Gnav.OnAnweChanged += GnavAnweChanged;
             Gnav.OnMaschineChanged += GnavMaschineChanged;
             Gnav.OnUserChanged += GnavUserChanged;
+            GnavAnweChanged();
+            GnavMaschineChanged();
+            GnavUserChanged();
         }
 
         private KmpDbService Svc { get; set; }
@@ -29,64 +36,89 @@ namespace QwTest7.Services.Kmp
 
         private IDictionary<IniKeyEntry, string> AnweList
         {
-            get => anweList ??= Svc.GetIniList(anwe, SecTyp.Anwendung, anwe);
+            get => anweList ??= GetIniList(Anwe, SecTyp.Anwendung, Anwe);
         }
         private IDictionary<IniKeyEntry, string> MaschineList
         {
-            get => maschineList ??= Svc.GetIniList(anwe, SecTyp.Maschine, maschine);
+            get => maschineList ??= GetIniList(Anwe, SecTyp.Maschine, Maschine);
         }
         private IDictionary<IniKeyEntry, string> UserList
         {
-            get => userList ??= Svc.GetIniList(anwe, SecTyp.User, user);
+            get => userList ??= GetIniList(Anwe, SecTyp.User, User);
         }
         private IDictionary<IniKeyEntry, string> VorgabeList
         {
-            get => vorgabeList ??= Svc.GetIniList(anwe, SecTyp.Vorgabe, vorgabe);
+            get => vorgabeList ??= GetIniList(Anwe, SecTyp.Vorgabe, Vorgabe);
+        }
+
+        private IDictionary<IniKeyEntry, string> GetIniList(string anwekennung, SecTyp sectyp, string ininame)
+        {
+            string sectypstr = SecTypToString(sectyp);
+            var items = Svc.GetInitialisierungen(anwekennung, sectypstr, ininame);
+            var dic = new Dictionary<IniKeyEntry, string>();
+            foreach (var item in items)
+            {
+                try
+                {
+                    dic.Add(new IniKeyEntry(item.SECTION, item.PARAM), item.WERT);
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning($"GetIniList({anwekennung},{sectyp},{ininame}) ({item.SECTION}, {item.PARAM}, {item.WERT})", ex);
+                }
+            }
+            return dic;
         }
 
         private void GnavAnweChanged()
         {
             anweList = null;
-            sectionTyp = null;
-            anwe = Gnav.AnweKennung;
-            vorgabe = Gnav.AnweKennung;  //für spätere Erweiterung
+            maschineList = null;
+            userList = null;
+            vorgabeList = null;
+            sectionTyp = null;       //neu laden
+            Anwe = Gnav.IniAnwe;
+            Vorgabe = Gnav.IniAnwe;  //für spätere Erweiterung
         }
         private void GnavMaschineChanged()
         {
             maschineList = null;
             sectionTyp = null;
-            maschine = Gnav.MaschineName;
+            Maschine = Gnav.MaschineName;
         }
         private void GnavUserChanged()
         {
             userList = null;
             sectionTyp = null;
-            user = Gnav.UserName;
+            User = Gnav.UserName;
         }
 
         private SectionTypes sectionTyp = null;
 
+        /// <summary>
+        /// distinct section über die einzelnen Listen: Anwe überschreibt Maschine überschreibt User..
+        /// </summary>
         private SectionTypes LoadSectionTypes()
         {
-            SectionTypes sectionTypes = new();
-            //distinct section über die einzelnen Listen:
-            for (var i = 0; i < 4; i++)
+            var sectionTypes = new SectionTypes();
+            var stl = new List<SecTyp>() { SecTyp.Vorgabe, SecTyp.User, SecTyp.Maschine, SecTyp.Anwendung };
+            foreach (var t in stl)
             {
-                var qlist = i switch
+                var qlist = t switch
                 {
-                    0 => VorgabeList.Keys,
-                    1 => UserList.Keys,
-                    2 => MaschineList.Keys,
-                    3 => AnweList.Keys,
+                    SecTyp.Vorgabe => VorgabeList.Keys,
+                    SecTyp.User => UserList.Keys,
+                    SecTyp.Maschine => MaschineList.Keys,
+                    SecTyp.Anwendung => AnweList.Keys,
                     _ => throw new NotImplementedException()
                 };
                 var query = qlist.Select(i => i.SECTION).Distinct();
                 foreach (var item in query)
                 {
-                    sectionTypes[item] = SecTyp.Vorgabe;
+                    //Reihenfolge ist wichtig!: Anwe überschreibt Maschine ü User ü Vorgabe
+                    sectionTypes[item] = t;
                 }
             }
-
             return sectionTypes;
         }
 
@@ -103,27 +135,54 @@ namespace QwTest7.Services.Kmp
 
         public string ReadItem(string section, string ident, string dflt)
         {
-            string result;
-            if (!AnweList.TryGetValue(new IniKeyEntry(section, ident), out result))
+            // dynamisch bestimmen pro ident: zu langsam, nicht kompatibel
+            //if (!AnweList.TryGetValue(new IniKeyEntry(section, ident), out string result))
+            //{
+            //    if (!MaschineList.TryGetValue(new IniKeyEntry(section, ident), out result))
+            //    {
+            //        if (!UserList.TryGetValue(new IniKeyEntry(section, ident), out result))
+            //        {
+            //            if (!VorgabeList.TryGetValue(new IniKeyEntry(section, ident), out result))
+            //            {
+            //                result = dflt;
+            //            }
+
+            //        }
+
+            //    }
+
+            //}
+            SecTyp sectyp = SectionTyp[section];
+            string result = dflt;
+            switch (sectyp)
             {
-                if (!MaschineList.TryGetValue(new IniKeyEntry(section, ident), out result))
-                {
+                case SecTyp.Vorgabe:
+                    if (!VorgabeList.TryGetValue(new IniKeyEntry(section, ident), out result))
+                    {
+                        result = dflt;
+                    }
+                    break;
+                case SecTyp.User:
                     if (!UserList.TryGetValue(new IniKeyEntry(section, ident), out result))
                     {
-                        if (!VorgabeList.TryGetValue(new IniKeyEntry(section, ident), out result))
-                        {
-                            result = dflt;
-                        }
-
+                        result = dflt;
                     }
-
-                }
-
+                    break;
+                case SecTyp.Maschine:
+                    if (!MaschineList.TryGetValue(new IniKeyEntry(section, ident), out result))
+                    {
+                        result = dflt;
+                    }
+                    break;
+                case SecTyp.Anwendung:
+                    if (!AnweList.TryGetValue(new IniKeyEntry(section, ident), out result))
+                    {
+                        result = dflt;
+                    }
+                    break;
             }
             return result.Trim();
         }
-
-
 
         private readonly string magic = "{D50CD510-E76A-40A1-9AF5-51466392824B}";
 
@@ -148,7 +207,8 @@ namespace QwTest7.Services.Kmp
                     s = s[1..];
                     ishex = true;
                 }
-                if (!(ishex ? int.TryParse(s, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out result)
+                if (!(ishex
+                    ? int.TryParse(s, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out result)
                     : int.TryParse(s, out result)))
                     result = 0;
             }
@@ -158,56 +218,125 @@ namespace QwTest7.Services.Kmp
 
         public void WriteItem(SecTyp sectyp, string section, string ident, string value)
         {
-            INITIALISIERUNGEN init = new INITIALISIERUNGEN()
+            var init = new INITIALISIERUNGEN()
             {
-                ANWENDUNG = anwe,
-                TYP = KmpDbService.SecTypToString(sectyp),
+                ANWENDUNG = Anwe,
+                TYP = SecTypToString(sectyp),
                 NAME = sectyp switch
                 {
-                    SecTyp.User => user,
-                    SecTyp.Maschine => maschine,
-                    _ => anwe
+                    SecTyp.User => User,
+                    SecTyp.Maschine => Maschine,
+                    _ => Anwe
                 },
                 SECTION = section,
                 PARAM = ident,
                 WERT = value
             };
+            //todo: Svc.InsOrUpdInit(init)
         }
 
         public void WriteItem(string section, string ident, string value)
         {
-            SecTyp sectyp = SecTyp.User;
+            SecTyp sectyp = SectionTyp[section];
+            WriteItem(sectyp, section, ident, value);
         }
 
         public void WriteItem(string section, string ident, int value)
         {
-            SecTyp sectyp = SecTyp.User;
+            WriteItem(section, ident, value.ToString());
         }
 
-        //string result;
-        //if (!AnweList.TryGetValue(new IniKeyEntry(section, ident), out result))
-        //{
-        //    if (!MaschineList.TryGetValue(new IniKeyEntry(section, ident), out result))
-        //    {
-        //        if (!UserList.TryGetValue(new IniKeyEntry(section, ident), out result))
-        //        {
-        //            if (!VorgabeList.TryGetValue(new IniKeyEntry(section, ident), out result))
-        //            {
-        //                result = dflt;
-        //            }
+        #endregion
 
-        //        }
+        public static string SecTypToString(SecTyp sectyp)
+        {
+            //return Convert.ToChar(int.Parse(sectyp.ToString("D"))).ToString();  //User->85->'U'->"U"
+            string result = sectyp switch
+            {
+                SecTyp.Vorgabe => "V",
+                SecTyp.User => "U",
+                SecTyp.Maschine => "M",
+                SecTyp.Anwendung => "A",
+                _ => throw new NotImplementedException()
+            };
+            return result;
+        }
 
-        //    }
+        public static SecTyp StringToSecTyp(string str)
+        {
+            //"U"->'U'->85->User
+            //byte[] asciiBytes = Encoding.ASCII.GetBytes(str);
+            //return (SecTyp)asciiBytes[0];
+            SecTyp result = str switch
+            {
+                "V" => SecTyp.Vorgabe,
+                "U" => SecTyp.User,
+                "M" => SecTyp.Maschine,
+                "A" => SecTyp.Anwendung,
+                _ => throw new NotImplementedException()
+            };
+            return result;
 
-        //}
+        }
+
+        #region für Interne Test Seiten
+
+        /// <summary>
+        /// ergibt Daten für Anzeige auf Page
+        /// Es werden nur die Felder SECTION und TYP befüllt
+        /// </summary>
+        public IList<INITIALISIERUNGEN> SectionTypSet()
+        {
+            var result = new List<INITIALISIERUNGEN>();
+            foreach (var ini in SectionTyp.SecTypList)
+            {
+                result.Add(new INITIALISIERUNGEN() { SECTION = ini.Key, TYP = SecTypToString(ini.Value) });
+            }
+
+            return result;
+        }
+
+        public IList<INITIALISIERUNGEN> AnweSet()
+        {
+            var result = new List<INITIALISIERUNGEN>();
+            foreach (var ini in AnweList)
+            {
+                result.Add(new INITIALISIERUNGEN() { SECTION = ini.Key.SECTION, PARAM = ini.Key.PARAM, WERT = ini.Value });
+            }
+
+            return result;
+        }
 
 
         #endregion
 
     }
 
+    public enum SecTyp
+    {
+        Anwendung = 'A',
+        Maschine = 'M',
+        User = 'U',
+        Vorgabe = 'V'
+    }
 
+    public partial class IniKeyEntry
+    {
+        public string SECTION { get; set; }
+        public string PARAM { get; set; }
+        //public string WERT { get; set; }
+
+        public IniKeyEntry(string section, string param)
+        {
+            SECTION = section;
+            PARAM = param;
+            //WERT = wert;
+        }
+    }
+
+    /// <summary>
+    /// Schnellzugriff auf den SectionTyp pro Section. Wird beim Laden befüllt.
+    /// </summary>
     public class SectionTypes
     {
         public SectionTypes()
@@ -234,4 +363,11 @@ namespace QwTest7.Services.Kmp
         public IDictionary<string, SecTyp> SecTypList;
 
     }
+
+    public class SectionTypEntry
+    {
+        public string SECTION { get; set; }
+        public string PARAM { get; set; }
+    }
+
 }

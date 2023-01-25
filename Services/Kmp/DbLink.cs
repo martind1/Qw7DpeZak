@@ -266,7 +266,7 @@ namespace QwTest7.Services.Kmp
             query.FilterParameters = FilterParameters;
             Prot.Prot0SL($"Filter:{Filter}");
             Prot.Prot0SL($"Filterparameter:{JsonSerializer.Serialize(query.FilterParameters)}");
-            tbl = KmpDbService.EntityQuery<TItem>(query).ToList();
+            tbl = KmpDbService.EntityGet<TItem>(query).ToList();
             //Idee ohne Data Service: tbl = lnav.queryList();
 
             Recordcount = KmpDbService.EntityQueryCount<TItem>(query);

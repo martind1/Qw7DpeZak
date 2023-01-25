@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
-using System.Data.Entity;
 using Radzen;
-using Query = Radzen.Query;
 using QwTest7.Data;
 using QwTest7.Models.Blacki;
 using System.Linq.Dynamic.Core;
@@ -28,7 +26,7 @@ namespace QwTest7.Services
 
 
         // von CRMDemoBlazor / dynamic-linq:
-        public IQueryable QueryableFromQuery(Query query, IQueryable items)
+        public IQueryable<T> QueryableFromQuery<T>(Query query, IQueryable<T> items) where T : class
         {
             if (query != null)
             {
@@ -88,12 +86,12 @@ namespace QwTest7.Services
 
         #region Entity
 
-        public IQueryable<T> EntityQuery<T>(Query query) where T : class
+        public IQueryable<T> EntityGet<T>(Query query) where T : class
         {
             var items = Ctx.Set<T>().AsQueryable();
             if (query != null)
             {
-                items = (IQueryable<T>)QueryableFromQuery(query, items);
+                items = QueryableFromQuery<T>(query, items);
             }
             return items;
         }
@@ -107,7 +105,7 @@ namespace QwTest7.Services
             {
                 query.Skip = null;
                 query.Top = null;
-                items = (IQueryable<T>)QueryableFromQuery(query, items);
+                items = QueryableFromQuery<T>(query, items);
             }
             return items.Count();
         }
@@ -134,16 +132,18 @@ namespace QwTest7.Services
             Ctx.Add(entity);
             Ctx.SaveChanges();
         }
+
+
         #endregion
 
         #region Studio Funktionen
 
-        public async Task<IQueryable<T>> EntityGet<T>(Query query = null) where T : class
+        public async Task<IQueryable<T>> EntityGetAsync<T>(Query query = null) where T : class
         {
             var items = Ctx.Set<T>().AsQueryable();
             if (query != null)
             {
-                items = (IQueryable<T>)QueryableFromQuery(query, items);
+                items = QueryableFromQuery<T>(query, items);
             }
             return await Task.FromResult(items);
         }
@@ -161,7 +161,7 @@ namespace QwTest7.Services
                 {
                     query.Skip = null;
                     query.Top = null;
-                    items = (IQueryable<T>)QueryableFromQuery(query, items);
+                    items = QueryableFromQuery<T>(query, items);
                 }
                 finally
                 {
