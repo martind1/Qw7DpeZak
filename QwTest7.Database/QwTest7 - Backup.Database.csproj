@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="%24{TempDir}\**" />
+    <Content Remove="%24{TempDir}\**" />
+    <EmbeddedResource Remove="%24{TempDir}\**" />
+    <None Remove="%24{TempDir}\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Radzen.Blazor" Version="*" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.19.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Oracle.EntityFrameworkCore" Version="7.21.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.HeaderPropagation" Version="7.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.0.12" />
+    <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
+    <PackageReference Include="Serilog.Expressions" Version="3.4.1" />
+  </ItemGroup>
+</Project>
