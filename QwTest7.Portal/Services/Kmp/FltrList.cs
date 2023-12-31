@@ -1,4 +1,4 @@
-﻿using QwTest7.Portal.Services.Kmp;
+﻿using QwTest7.Portal.Services.Kmp.Helper;
 using Serilog;
 
 namespace QwTest7.Services.Kmp

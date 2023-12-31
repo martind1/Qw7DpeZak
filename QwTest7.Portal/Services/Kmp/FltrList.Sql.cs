@@ -1,5 +1,4 @@
-﻿using QwTest7.Portal.Services.Kmp;
-using QwTest7.Portal.Services.Kmp.Enums;
+﻿using QwTest7.Portal.Services.Kmp.Enums;
 using QwTest7.Portal.Services.Kmp.Helper;
 using System.Text.RegularExpressions;
 

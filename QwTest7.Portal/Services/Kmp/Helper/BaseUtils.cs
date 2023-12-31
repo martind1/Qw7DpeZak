@@ -1,30 +1,9 @@
 ﻿using DocumentFormat.OpenXml.Features;
+using QwTest7.Portal.Services.Kmp.Exceptions;
 using System.Configuration;
 
-namespace QwTest7.Portal.Services.Kmp
+namespace QwTest7.Portal.Services.Kmp.Helper
 {
-    /// <summary>
-    /// Basis Exception für unsere Anwendung
-    /// </summary>
-    [Serializable]
-    public class KmpException : Exception
-    {
-        public KmpException() { }
-        public KmpException(string message) : base(message) { }
-        public KmpException(string message, Exception inner) : base(message, inner) { }
-        protected KmpException(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
-    }
-
-    /// <summary>
-    /// Statische Klasse mit Anwendungs Konstanten
-    /// </summary>
-    public static class AppParameter
-    {
-        //für ProtService
-        public static int MaxStatusListEntries { get; set; } = 1000;
-    }
 
     /// <summary>
     /// Statische Klasse mit Basis Hilfsfunktionen
