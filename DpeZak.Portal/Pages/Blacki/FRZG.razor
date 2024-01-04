@@ -1,0 +1,85 @@
+@page "/FRZG"
+
+@attribute [Authorize]
+@using DpeZak.Database.Models
+<PageTitle>Fahrzeuge</PageTitle>
+<div class="row" style="margin-bottom: 1rem">
+    <div class="col-12 col-md-6">
+        <RadzenText Text="FAHRZEUGE" TextStyle="TextStyle.H3" TagName="TagName.H1" style="margin: 0" />
+    </div>
+    <div class="col-12 col-md-6 justify-content-start justify-content-md-end" style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem">
+        <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@AddButtonClick" Variant="Variant.Flat" />
+    </div>
+    <div class="col-md-12">
+        <RadzenTextBox class="w-100" Name="StatusText" @bind-Value="StatusLine" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <RadzenDataGrid @ref="grid0"
+                        ColumnWidth="200px"
+                        AllowFiltering="true" FilterMode="FilterMode.Advanced"
+                        AllowPaging="true" PageSize="@PageSize"
+                        AllowVirtualization="false"
+                        PageSizeOptions="@pageSizeOptions"
+                        ShowPagingSummary="@showPagerSummary" PagingSummaryFormat="@pagingSummaryFormat"
+                        AllowSorting="true"
+                        Density="@Density"
+                        Data="@tbl0"
+                        TItem="FAHRZEUGE"
+                        SelectionMode="DataGridSelectionMode.Single" @bind-Value=@selectedList
+                        LoadData="@LoadData" Count="@RecordCount" IsLoading=@isLoading>
+            <Columns>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                    <Template Context="FAHRZEUGE">
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.ExtraSmall"
+                                      Shade="Shade.Lighter" Variant="Variant.Flat"
+                                      Click=@(args => GridDeleteButtonClick(args, FAHRZEUGE)) @onclick:stopPropagation="true" />
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="FRZG_ID" Title="FRZGID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="TRANSPORTMITTEL" Title="TRANSPORTMITTEL">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="WERK_NR" Title="WERKNR">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="SPEDITION" Title="SPEDITION">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="TARA_GEWICHT" Title="TARAGEWICHT">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="TARA_DATUM" Title="TARADATUM">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="REPLIKATION" Title="REPLIKATION">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="ERFASST_VON" Title="ERFASSTVON">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="ERFASST_AM" Title="ERFASSTAM">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="ERFASST_DATENBANK" Title="ERFASSTDATENBANK">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="GEAENDERT_VON" Title="GEAENDERTVON">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="GEAENDERT_AM" Title="GEAENDERTAM">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="GEAENDERT_DATENBANK" Title="GEAENDERTDATENBANK">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="ANZAHL_AENDERUNGEN" Title="ANZAHLAENDERUNGEN">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="BEMERKUNG" Title="BEMERKUNG">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="FAHRZEUGTYP" Title="FAHRZEUGTYP">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="TARA_FREI_ANZAHL" Title="TARAFREIANZAHL">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="MAX_BRUTTO" Title="MAXBRUTTO">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="FLAGS" Title="FLAGS">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="SPED_ID" Title="SPED_ID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="FAHRZEUGE" Property="SPED.SPED_NAME" Title="Speditionen">
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </div>
+</div>
