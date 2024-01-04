@@ -3,12 +3,11 @@ using Microsoft.Extensions.Configuration;
 
 namespace DpeZak.Database.Models;
 
-public partial class QuvaContext : DbContext
+public partial class DpeContext : DbContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseOracle(Conf().GetConnectionString("QuvaConnection"),
-            b => b.UseOracleSQLCompatibility(Conf()["OracleSQLCompatibility"] ?? "11"));
+        optionsBuilder.UseSqlServer(Conf().GetConnectionString("DefaultConnection"));
 
         optionsBuilder.EnableSensitiveDataLogging();
 

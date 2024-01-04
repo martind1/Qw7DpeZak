@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DpeZak.Portal.Controllers;
 
-public partial class ExportQuvaController(QuvaDbService service) : ExportController
+public partial class ExportQuvaController(DpeDbService service) : ExportController
 {
-    private readonly QuvaDbService service = service;
+    private readonly DpeDbService service = service;
 
     [HttpGet("/export/Quva/fahrzeuges/csv")]
     [HttpGet("/export/Quva/fahrzeuges/csv(fileName='{fileName}')")]

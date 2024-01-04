@@ -33,6 +33,7 @@ namespace DpeZak.Services.Security
             catch (HttpRequestException ex)
             {
                 //MD
+                Log.Error(ex.Message);
                 throw;
             }
 

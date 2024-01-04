@@ -1,80 +1,64 @@
 ﻿{
-   "CodeGenerationMode": 3,
-   "ContextClassName": "QuvaContext",
+   "CodeGenerationMode": 4,
+   "ContextClassName": "DpeContext",
    "ContextNamespace": null,
    "DefaultDacpacSchema": null,
-   "FilterSchemas": true,
+   "FilterSchemas": false,
    "IncludeConnectionString": false,
    "ModelNamespace": null,
    "OutputContextPath": "",
    "OutputPath": "Models",
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "DpeZak.Database",
-   "Schemas": [
-      {
-         "Name": "QUVA"
-      },
-      {
-         "Name": "QUSY"
-      },
-      {
-         "Name": "PINFO"
-      }
-   ],
+   "Schemas": null,
    "SelectedHandlebarsLanguage": 2,
    "SelectedToBeGenerated": 0,
    "T4TemplatePath": null,
    "Tables": [
       {
-         "Name": "PINFO.KONTINGENTE",
+         "Name": "[dbo].[ASWS]",
          "ObjectType": 0
       },
       {
-         "Name": "PINFO.KUNDENVEREINBARUNGEN",
+         "Name": "[dbo].[BEZI]",
          "ObjectType": 0
       },
       {
-         "Name": "QUSY.AUSWAHLEN",
+         "Name": "[dbo].[FLTR]",
          "ObjectType": 0
       },
       {
-         "Name": "QUSY.DATEIEN",
+         "Name": "[dbo].[KUND]",
          "ObjectType": 0
       },
       {
-         "Name": "QUSY.FILTERABFRAGEN",
+         "Name": "[dbo].[R_DATN]",
          "ObjectType": 0
       },
       {
-         "Name": "QUSY.INITIALISIERUNGEN",
+         "Name": "[dbo].[R_INIT]",
          "ObjectType": 0
       },
       {
-         "Name": "QUVA.FAHRZEUGE",
-         "ObjectType": 0
-      },
-      {
-         "Name": "QUVA.KARTEN",
-         "ObjectType": 0
-      },
-      {
-         "Name": "QUVA.SPEDITIONEN",
+         "Name": "[dbo].[VBEZ]",
          "ObjectType": 0
       }
    ],
-   "UiHint": "BLACKI",
+   "UiHint": "blacki\\sqlsvr17.depoeur.dbo",
    "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
-   "UseDatabaseNames": true,
+   "UseDatabaseNames": false,
    "UseDateOnlyTimeOnly": false,
    "UseDbContextSplitting": false,
-   "UseFluentApiOnly": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
    "UseHandleBars": false,
    "UseHierarchyId": false,
    "UseInflector": false,
    "UseLegacyPluralizer": false,
    "UseManyToManyEntity": false,
    "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
    "UseNoObjectFilter": false,
    "UseNodaTime": false,
    "UseNullableReferences": true,

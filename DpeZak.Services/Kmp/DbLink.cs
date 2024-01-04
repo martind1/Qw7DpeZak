@@ -43,10 +43,10 @@ namespace DpeZak.Portal.Services.Kmp
         public string Page { get; private set; }
 
         public string Abfrage { get => abfrage; set => abfrage = LoadAbfrage(value); }
-        public FILTERABFRAGEN FltrRec { get => fltrRec; set => fltrRec = value; }
+        public FLTR FltrRec { get => fltrRec; set => fltrRec = value; }
 
         //Steuerung:
-        private FILTERABFRAGEN fltrRec;
+        private FLTR fltrRec;
         private string abfrage;
 
         public DbLink(string page, string abfrage)

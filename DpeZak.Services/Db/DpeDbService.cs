@@ -6,15 +6,15 @@ namespace DpeZak.Services.Db;
 /// <summary>
 /// Datenservice für QUVA
 /// </summary>
-public partial class QuvaDbService : BaseDbService
+public partial class DpeDbService : BaseDbService
 {
-    public QuvaDbService(QuvaContext ctx) : base(ctx)
+    public DpeDbService(DpeContext ctx) : base(ctx)
     {
     }
 
-    public QuvaContext AppCtx()
+    public DpeContext AppCtx()
     {
-        return (QuvaContext)Ctx;
+        return (DpeContext)Ctx;
     }
 
     public async Task<IQueryable<FAHRZEUGE>> GetFahrzeuge(Query query = null)

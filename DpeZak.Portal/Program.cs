@@ -11,6 +11,9 @@ using Radzen;
 using Serilog;
 using Serilog.Context;
 using DpeZak.Database.Migrate;
+using DpeZak.Services.Security;
+using DpeZak.Services.Db;
+using DpeZak.Services.Kmp;
 
 //md Serilog noch ohne Builder und ohne appsettings.json:
 Log.Logger = new LoggerConfiguration()
@@ -41,7 +44,7 @@ try
 
     //Studio Quva
     builder.Services.AddRadzenComponents();
-    builder.Services.AddDbContext<QuvaContext>();
+    builder.Services.AddDbContext<DpeContext>();
 
     //MD Kmp
     //so nicht - builder.Services.AddScoped<IGlobalService>(a => new GlobalService("QUVA"));
@@ -51,7 +54,7 @@ try
     builder.Services.AddScoped<ProtService>();
 
     //Blacki Quva
-    builder.Services.AddScoped<QuvaDbService>();
+    builder.Services.AddScoped<DpeDbService>();
 
     //Security
     builder.Services.AddHttpClient("DpeZak").AddHeaderPropagation(o => o.Headers.Add("Cookie"));

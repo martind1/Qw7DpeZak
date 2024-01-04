@@ -31,7 +31,7 @@ public partial class FRZG
     protected SecurityService Security { get; set; }
 
     [Inject]
-    public QuvaDbService BlackiService { get; set; }
+    public DpeDbService BlackiService { get; set; }
     [Inject]
     protected GlobalService Gnav { get; set; }
     [Inject]

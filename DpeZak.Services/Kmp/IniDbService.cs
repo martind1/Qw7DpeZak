@@ -217,7 +217,7 @@ public class IniDbService
 
     public async Task WriteItem(SecTyp sectyp, string section, string ident, string value)
     {
-        var init = new INITIALISIERUNGEN()
+        var init = new R_INIT()
         {
             ANWENDUNG = Anwe,
             TYP = SecTypToString(sectyp),
@@ -288,12 +288,12 @@ public class IniDbService
     /// ergibt Daten für Anzeige auf Page
     /// Es werden nur die Felder SECTION und TYP befüllt
     /// </summary>
-    public IList<INITIALISIERUNGEN> SectionTypSet()
+    public IList<R_INIT> SectionTypSet()
     {
-        var result = new List<INITIALISIERUNGEN>();
+        var result = new List<R_INIT>();
         foreach (var ini in SectionTyp.SecTypList)
         {
-            result.Add(new INITIALISIERUNGEN() { SECTION = ini.Key, TYP = SecTypToString(ini.Value) });
+            result.Add(new R_INIT() { SECTION = ini.Key, TYP = SecTypToString(ini.Value) });
         }
 
         return result;
@@ -303,39 +303,39 @@ public class IniDbService
     /// ergibt Daten für Anzeige auf Page
     /// Es werden nur die Felder SECTION, PARAM und WERT befüllt
     /// </summary>
-    public IList<INITIALISIERUNGEN> AnweSet()
+    public IList<R_INIT> AnweSet()
     {
-        var result = new List<INITIALISIERUNGEN>();
+        var result = new List<R_INIT>();
         foreach (var ini in AnweList)
         {
-            result.Add(new INITIALISIERUNGEN() { SECTION = ini.Key.SECTION, PARAM = ini.Key.PARAM, WERT = ini.Value });
+            result.Add(new R_INIT() { SECTION = ini.Key.SECTION, PARAM = ini.Key.PARAM, WERT = ini.Value });
         }
         return result;
     }
-    public IList<INITIALISIERUNGEN> MaschineSet()
+    public IList<R_INIT> MaschineSet()
     {
-        var result = new List<INITIALISIERUNGEN>();
+        var result = new List<R_INIT>();
         foreach (var ini in MaschineList)
         {
-            result.Add(new INITIALISIERUNGEN() { SECTION = ini.Key.SECTION, PARAM = ini.Key.PARAM, WERT = ini.Value });
+            result.Add(new R_INIT() { SECTION = ini.Key.SECTION, PARAM = ini.Key.PARAM, WERT = ini.Value });
         }
         return result;
     }
-    public IList<INITIALISIERUNGEN> UserSet()
+    public IList<R_INIT> UserSet()
     {
-        var result = new List<INITIALISIERUNGEN>();
+        var result = new List<R_INIT>();
         foreach (var ini in UserList)
         {
-            result.Add(new INITIALISIERUNGEN() { SECTION = ini.Key.SECTION, PARAM = ini.Key.PARAM, WERT = ini.Value });
+            result.Add(new R_INIT() { SECTION = ini.Key.SECTION, PARAM = ini.Key.PARAM, WERT = ini.Value });
         }
         return result;
     }
-    public IList<INITIALISIERUNGEN> VorgabeSet()
+    public IList<R_INIT> VorgabeSet()
     {
-        var result = new List<INITIALISIERUNGEN>();
+        var result = new List<R_INIT>();
         foreach (var ini in VorgabeList)
         {
-            result.Add(new INITIALISIERUNGEN() { SECTION = ini.Key.SECTION, PARAM = ini.Key.PARAM, WERT = ini.Value });
+            result.Add(new R_INIT() { SECTION = ini.Key.SECTION, PARAM = ini.Key.PARAM, WERT = ini.Value });
         }
         return result;
     }
@@ -369,7 +369,7 @@ public class IniDbService
     /// ergibt Daten für Anzeige auf Page
     /// Es werden nur die Felder SECTION, PARAM und WERT befüllt
     /// </summary>
-    public async Task<IList<INITIALISIERUNGEN>> SectionParameterSet(string Anwe, string Section)
+    public async Task<IList<R_INIT>> SectionParameterSet(string Anwe, string Section)
     {
         var items = await Svc.GetAnweSection(Anwe, Section);
         return items;

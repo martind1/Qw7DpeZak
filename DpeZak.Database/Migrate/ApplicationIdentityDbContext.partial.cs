@@ -9,8 +9,7 @@ namespace DpeZak.Database.Migrate
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseOracle(Conf().GetConnectionString("QuvaConnection"),
-                b => b.UseOracleSQLCompatibility(Conf()["OracleSQLCompatibility"] ?? "11"));
+            optionsBuilder.UseSqlServer(Conf().GetConnectionString("DefaultConnection"));
 
             optionsBuilder.EnableSensitiveDataLogging();
 
