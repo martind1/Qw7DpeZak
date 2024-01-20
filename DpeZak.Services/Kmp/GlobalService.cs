@@ -32,37 +32,19 @@ namespace DpeZak.Services.Kmp
     /// </summary>
     public class GlobalService : ComponentBase
     {
-        //so nicht. Is null! [Inject] protected SecurityService Security { get; set; }
-        //public string UserName()
-        //{
-        //    string username = String.Empty;
-        //    try
-        //    {
-        //        username = Security.User.ToString();
-        //    }
-        //    catch
-        //    {
-        //    }
-        //    return string.IsNullOrEmpty(username) ? "anonymous" : username; //vergl program.cs
-        //}
+        private readonly ILogger _log;
 
         public GlobalService()
         {
+            _log = Log.ForContext(GetType());
+
             ActivePage = new PageDescription();
             AnweKennung = BaseUtils.ReadSetting("AnweKennung", "NoAnwe");  //QUVAR3
             IniAnwe = BaseUtils.ReadSetting("IniAnwe", "NoIniAnwe");  //QUVAE
             anweLogged = false;
         }
 
-        //so nicht - public GlobalService(string anweKennung)
-        //{
-        //    ActivePage = new PageDescription();
-        //    AnweKennung= anweKennung;
-        //}
-        //public string GetConstructorParameter()
-        //{
-        //    return anweKennung;
-        //}
+        //public string UserName()
 
         public event Action<KommandoTyp> OnDoKommando;
         private void DoKommando(KommandoTyp Kommando) => OnDoKommando?.Invoke(Kommando);
@@ -133,7 +115,7 @@ namespace DpeZak.Services.Kmp
             {
                 if (anweKennung != value)
                 {
-                    Log.Information($"### AnweKennung({value})<-({anweKennung})");
+                    _log.Information($"### AnweKennung({value})<-({anweKennung})");
                     AnweChanged();  //Ereignis für Ini
                 }
                 anweLogged = true;
@@ -147,7 +129,7 @@ namespace DpeZak.Services.Kmp
             {
                 if (iniAnwe != value)
                 {
-                    Log.Information($"### IniAnwe({value})<-({iniAnwe})");
+                    _log.Information($"### IniAnwe({value})<-({iniAnwe})");
                     IniAnweChanged();  //Ereignis für Ini
                 }
                 iniAnwe = value;
@@ -162,7 +144,7 @@ namespace DpeZak.Services.Kmp
             set
             {
                 if (userAgent != value)
-                    Log.Information($"### UserAgent({value})<-({userAgent})");
+                    _log.Information($"### UserAgent({value})<-({userAgent})");
                 userAgent = value;
             }
         }
@@ -173,7 +155,7 @@ namespace DpeZak.Services.Kmp
             {
                 if (maschineName != value)
                 {
-                    Log.Information($"### MaschineName({value})<-({maschineName})");
+                    _log.Information($"### MaschineName({value})<-({maschineName})");
                     MaschineChanged();  //Ereignis für Ini
                 }
                 maschineName = value;
@@ -186,7 +168,7 @@ namespace DpeZak.Services.Kmp
             {
                 if (userName != value)
                 {
-                    Log.Information($"### UserName({value})<-({userName})");
+                    _log.Information($"### UserName({value})<-({userName})");
                     UserChanged();  //Ereignis für Ini
                 }
                 userName = value;
@@ -199,36 +181,18 @@ namespace DpeZak.Services.Kmp
             {
                 if (!anweLogged)
                 {
-                    Log.Debug($"### AnweKennung({AnweKennung})");
+                    _log.Debug($"### AnweKennung({AnweKennung})");
                     AnweChanged();  //Ereignis für Ini
                 }
                 anweLogged = true;
                 if (iPAddress != value)
-                    Log.Information($"### IPAddress({value})<-({iPAddress})");
+                    _log.Information($"### IPAddress({value})<-({iPAddress})");
                 iPAddress = value;
-                MaschineName = GetMachineNameFromIPAddress(value);
+                MaschineName = GlobalUtils.GetMachineNameFromIPAddress(value);
             }
         }
 
-        public static string GetMachineNameFromIPAddress(string ipAddress)
-        {
-            string machineName;
-            try
-            {
-                IPHostEntry hostEntry = Dns.GetHostEntry(ipAddress);
-
-                machineName = hostEntry.HostName;
-                machineName = machineName.Split('.')[0];  //blacki.sand.int -> blacki
-            }
-            catch (Exception ex)
-            {
-                Log.Warning($"GetMachineNameFromIPAddress({ipAddress})", ex);
-                // Machine not found...
-                machineName = ipAddress;
-            }
-            return machineName;
-        }
-
+        
 
         #endregion
 

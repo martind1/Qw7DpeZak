@@ -32,7 +32,7 @@ public partial class Inilist
     [Inject]
     IniDbService Ini { get; set; }
 
-    protected IList<R_INIT> iniSet { get; set; }
+    protected IList<RInit> iniSet { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -58,20 +58,20 @@ public partial class Inilist
     #region Tabs
     private readonly TabPosition tabPosition = TabPosition.Top;
     bool? allGroupsExpanded = false;
-    private RadzenDataGrid<R_INIT> anweGrid;
-    private RadzenDataGrid<R_INIT> maschineGrid;
-    private RadzenDataGrid<R_INIT> userGrid;
-    private RadzenDataGrid<R_INIT> vorgabeGrid;
-    private RadzenDataGrid<R_INIT> werkparameterGrid;
+    private RadzenDataGrid<RInit> anweGrid;
+    private RadzenDataGrid<RInit> maschineGrid;
+    private RadzenDataGrid<RInit> userGrid;
+    private RadzenDataGrid<RInit> vorgabeGrid;
+    private RadzenDataGrid<RInit> werkparameterGrid;
 
-    IList<R_INIT> selectedList;
-    IList<R_INIT> AnweSet;
-    IList<R_INIT> MaschineSet;
-    IList<R_INIT> UserSet;
-    IList<R_INIT> VorgabeSet;
-    IList<R_INIT> WerkparameterSet;
+    IList<RInit> selectedList;
+    IList<RInit> AnweSet;
+    IList<RInit> MaschineSet;
+    IList<RInit> UserSet;
+    IList<RInit> VorgabeSet;
+    IList<RInit> WerkparameterSet;
 
-    void OnGroup(DataGridColumnGroupEventArgs<R_INIT> args)
+    void OnGroup(DataGridColumnGroupEventArgs<RInit> args)
     {
         allGroupsExpanded = false;
     }

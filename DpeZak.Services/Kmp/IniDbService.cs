@@ -60,11 +60,11 @@ public class IniDbService
         {
             try
             {
-                dic.Add(new IniKeyEntry(item.SECTION, item.PARAM), item.WERT);
+                dic.Add(new IniKeyEntry(item.Section, item.Param), item.Wert);
             }
             catch (Exception ex)
             {
-                Log.Warning($"GetIniList({anwekennung},{sectyp},{ininame}) ({item.SECTION}, {item.PARAM}, {item.WERT})", ex);
+                Log.Warning($"GetIniList({anwekennung},{sectyp},{ininame}) ({item.Section}, {item.Param}, {item.Wert})", ex);
             }
         }
         return dic;
@@ -110,7 +110,7 @@ public class IniDbService
                 SecTyp.Anwendung => AnweList.Keys,
                 _ => throw new NotImplementedException()
             };
-            var query = qlist.Select(i => i.SECTION).Distinct();
+            var query = qlist.Select(i => i.Section).Distinct();
             foreach (var item in query)
             {
                 //Reihenfolge ist wichtig!: Anwe überschreibt Maschine ü User ü Vorgabe
@@ -217,19 +217,19 @@ public class IniDbService
 
     public async Task WriteItem(SecTyp sectyp, string section, string ident, string value)
     {
-        var init = new R_INIT()
+        var init = new RInit()
         {
-            ANWENDUNG = Anwe,
-            TYP = SecTypToString(sectyp),
-            NAME = sectyp switch
+            Anwendung = Anwe,
+            Typ = SecTypToString(sectyp),
+            Name = sectyp switch
             {
                 SecTyp.User => User,
                 SecTyp.Maschine => Maschine,
                 _ => Anwe
             },
-            SECTION = section,
-            PARAM = ident,
-            WERT = value
+            Section = section,
+            Param = ident,
+            Wert = value
         };
         await Svc.SaveInitialisierungen(init);
     }
@@ -286,14 +286,14 @@ public class IniDbService
 
     /// <summary>
     /// ergibt Daten für Anzeige auf Page
-    /// Es werden nur die Felder SECTION und TYP befüllt
+    /// Es werden nur die Felder Section und Typ befüllt
     /// </summary>
-    public IList<R_INIT> SectionTypSet()
+    public IList<RInit> SectionTypSet()
     {
-        var result = new List<R_INIT>();
+        var result = new List<RInit>();
         foreach (var ini in SectionTyp.SecTypList)
         {
-            result.Add(new R_INIT() { SECTION = ini.Key, TYP = SecTypToString(ini.Value) });
+            result.Add(new RInit() { Section = ini.Key, Typ = SecTypToString(ini.Value) });
         }
 
         return result;
@@ -301,41 +301,41 @@ public class IniDbService
 
     /// <summary>
     /// ergibt Daten für Anzeige auf Page
-    /// Es werden nur die Felder SECTION, PARAM und WERT befüllt
+    /// Es werden nur die Felder Section, Param und Wert befüllt
     /// </summary>
-    public IList<R_INIT> AnweSet()
+    public IList<RInit> AnweSet()
     {
-        var result = new List<R_INIT>();
+        var result = new List<RInit>();
         foreach (var ini in AnweList)
         {
-            result.Add(new R_INIT() { SECTION = ini.Key.SECTION, PARAM = ini.Key.PARAM, WERT = ini.Value });
+            result.Add(new RInit() { Section = ini.Key.Section, Param = ini.Key.Param, Wert = ini.Value });
         }
         return result;
     }
-    public IList<R_INIT> MaschineSet()
+    public IList<RInit> MaschineSet()
     {
-        var result = new List<R_INIT>();
+        var result = new List<RInit>();
         foreach (var ini in MaschineList)
         {
-            result.Add(new R_INIT() { SECTION = ini.Key.SECTION, PARAM = ini.Key.PARAM, WERT = ini.Value });
+            result.Add(new RInit() { Section = ini.Key.Section, Param = ini.Key.Param, Wert = ini.Value });
         }
         return result;
     }
-    public IList<R_INIT> UserSet()
+    public IList<RInit> UserSet()
     {
-        var result = new List<R_INIT>();
+        var result = new List<RInit>();
         foreach (var ini in UserList)
         {
-            result.Add(new R_INIT() { SECTION = ini.Key.SECTION, PARAM = ini.Key.PARAM, WERT = ini.Value });
+            result.Add(new RInit() { Section = ini.Key.Section, Param = ini.Key.Param, Wert = ini.Value });
         }
         return result;
     }
-    public IList<R_INIT> VorgabeSet()
+    public IList<RInit> VorgabeSet()
     {
-        var result = new List<R_INIT>();
+        var result = new List<RInit>();
         foreach (var ini in VorgabeList)
         {
-            result.Add(new R_INIT() { SECTION = ini.Key.SECTION, PARAM = ini.Key.PARAM, WERT = ini.Value });
+            result.Add(new RInit() { Section = ini.Key.Section, Param = ini.Key.Param, Wert = ini.Value });
         }
         return result;
     }
@@ -355,11 +355,11 @@ public class IniDbService
         {
             try
             {
-                dic.Add(new IniKeyEntry(item.SECTION, item.PARAM), item.WERT);
+                dic.Add(new IniKeyEntry(item.Section, item.Param), item.Wert);
             }
             catch (Exception ex)
             {
-                Log.Warning($"GetSectionParameter({Anwe},{Section}) ({item.SECTION}, {item.PARAM}, {item.WERT})", ex);
+                Log.Warning($"GetSectionParameter({Anwe},{Section}) ({item.Section}, {item.Param}, {item.Wert})", ex);
             }
         }
         return dic;
@@ -367,9 +367,9 @@ public class IniDbService
 
     /// <summary>
     /// ergibt Daten für Anzeige auf Page
-    /// Es werden nur die Felder SECTION, PARAM und WERT befüllt
+    /// Es werden nur die Felder Section, Param und Wert befüllt
     /// </summary>
-    public async Task<IList<R_INIT>> SectionParameterSet(string Anwe, string Section)
+    public async Task<IList<RInit>> SectionParameterSet(string Anwe, string Section)
     {
         var items = await Svc.GetAnweSection(Anwe, Section);
         return items;
@@ -393,15 +393,15 @@ public enum SecTyp
 
 public partial class IniKeyEntry
 {
-    public string SECTION { get; set; }
-    public string PARAM { get; set; }
-    //public string WERT { get; set; }
+    public string Section { get; set; }
+    public string Param { get; set; }
+    //public string Wert { get; set; }
 
     public IniKeyEntry(string section, string param)
     {
-        SECTION = section;
-        PARAM = param;
-        //WERT = wert;
+        Section = section;
+        Param = param;
+        //Wert = wert;
     }
 }
 
@@ -437,6 +437,6 @@ public class SectionTypes
 
 public class SectionTypEntry
 {
-    public string SECTION { get; set; }
-    public string PARAM { get; set; }
+    public string Section { get; set; }
+    public string Param { get; set; }
 }

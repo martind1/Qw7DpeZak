@@ -43,10 +43,10 @@ namespace DpeZak.Portal.Services.Kmp
         public string Page { get; private set; }
 
         public string Abfrage { get => abfrage; set => abfrage = LoadAbfrage(value); }
-        public FLTR FltrRec { get => fltrRec; set => fltrRec = value; }
+        public Fltr FltrRec { get => fltrRec; set => fltrRec = value; }
 
         //Steuerung:
-        private FLTR fltrRec;
+        private Fltr fltrRec;
         private string abfrage;
 
         public DbLink(string page, string abfrage)
@@ -56,7 +56,7 @@ namespace DpeZak.Portal.Services.Kmp
 
         }
 
-        // Record mit Columnlist, Keyfields, Fltrlist von Table FLTR[FormKurz, Abfrage] laden
+        // Record mit Columnlist, Keyfields, Fltrlist von Table Fltr[FormKurz, Abfrage] laden
         public string LoadAbfrage(string value)
         {
             return LoadAbfrageAsync(value).GetAwaiter().GetResult();
@@ -74,8 +74,7 @@ namespace DpeZak.Portal.Services.Kmp
 
         public ColumnList LoadColumnlist()
         {
-            if (FltrRec.COLUMNLIST is null)
-                throw new ArgumentNullException(nameof(FltrRec.COLUMNLIST));
+            ArgumentNullException.ThrowIfNull(FltrRec.Columnlist);
             //Test: statische Liste
             //todo: von Abfrage laden
             //string cl = 
@@ -93,7 +92,7 @@ namespace DpeZak.Portal.Services.Kmp
             //erz_str:15=erz_str";
             //return new ColumnList(cl);
 
-            ColumnList columnlist = new(FltrRec.COLUMNLIST);  // DB when exists
+            ColumnList columnlist = new(FltrRec.Columnlist);  // DB when exists
             int width = FltrRec == null ? 8 : 0;
 
             //Groß/Klein korrigieren:
@@ -141,12 +140,12 @@ namespace DpeZak.Portal.Services.Kmp
         //OrderBy setzen
         public string LoadKeyFields()
         {
-            if (FltrRec.KEYFIELDS is null)
-                throw new ArgumentNullException(nameof(FltrRec.KEYFIELDS));
+            if (FltrRec.Keyfields is null)
+                throw new ArgumentNullException(nameof(FltrRec.Keyfields));
             //von Abfrage laden
             //Groß/Kleinschreibung prüfen, anpassen oder Fehler wenn nicht gefunden
             //Bsp  "edt;ETm desc"
-            string kf = FltrRec == null ? "" : FltrRec.KEYFIELDS;
+            string kf = FltrRec == null ? "" : FltrRec.Keyfields;
 
             string[] keyfields = kf.Split(";", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
             IDictionary<string, string> fields = new Dictionary<string, string>();
@@ -185,11 +184,11 @@ namespace DpeZak.Portal.Services.Kmp
 
         public FltrList LoadFltrlist()
         {
-            if (FltrRec.FLTRLIST is null)
-                throw new ArgumentNullException(nameof(FltrRec.FLTRLIST));
-            //von Abfrage laden: LookUp FLTR[formKurz, Abfrage].FltrList
+            if (FltrRec.Fltrlist is null)
+                throw new ArgumentNullException(nameof(FltrRec.Fltrlist));
+            //von Abfrage laden: LookUp Fltr[formKurz, Abfrage].FltrList
             //Bsp  "lityp=B;A\r\nlort_nr=57";
-            FltrList fltrlist = new(FltrRec.FLTRLIST);  // DB when exists
+            FltrList fltrlist = new(FltrRec.Fltrlist);  // DB when exists
             //Groß/Klein korrigieren:
             foreach (var fltr in fltrlist.Fltrs)
             {
@@ -245,7 +244,7 @@ namespace DpeZak.Portal.Services.Kmp
             isLoading = true;
             // await Task.Yield();  //why?
 
-            await LoadAbfrageAsync(abfrage);  //von FLTR neu einlesen (Columnlist, Fltrlist,..)
+            await LoadAbfrageAsync(abfrage);  //von Fltr neu einlesen (Columnlist, Fltrlist,..)
 
             //Pagesize anpassen falls in GNav/LNav geändert
             if (Paging || Virtualization)

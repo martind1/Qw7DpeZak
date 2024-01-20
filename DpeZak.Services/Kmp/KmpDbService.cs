@@ -23,17 +23,17 @@ namespace DpeZak.Services.Kmp
             return (DpeContext)Ctx;
         }
 
-        #region FLTR
+        #region Fltr
 
-        public async Task<FLTR?> GetFltr(string formkurz, string abfrage)
+        public async Task<Fltr?> GetFltr(string formkurz, string abfrage)
         {
-            //var items = Ctx.FLTR.AsQueryable();
+            //var items = Ctx.Fltr.AsQueryable();
             var query = new Query()
             {
-                Filter = "FORM = @0 and NAME = @1",
+                Filter = "FORM = @0 and Name = @1",
                 FilterParameters = new object[] { formkurz, abfrage }
             };
-            var items = QueryableFromQuery<FLTR>(query, AppCtx().FLTR);
+            var items = QueryableFromQuery<Fltr>(query, AppCtx().Fltr);
             var fltr = await items.FirstOrDefaultAsync();
             //Neuladen erzwingen:
             if (fltr != null)
@@ -49,45 +49,45 @@ namespace DpeZak.Services.Kmp
         #region IniDB
 
         /// <summary>
-        /// ergibt Liste der für diesen User/Maschine/Anwendung/Vorgabe vorhandenen Einträge: SECTION, PARAM, WERT
-        /// select distinct ANWENDUNG, TYP, NAME, SECTION from QUSY.R_INIT R_INIT
-        ///  where (ANWENDUNG = 'QUVAE')
-        ///    and ((TYP = 'A') 
-        ///     or  ((TYP = 'M') and (NAME = '0120')) 
-        ///     or  ((TYP = 'U') and (NAME = 'MDAMBACH')) 
-        ///     or  ((TYP = 'V') and (NAME LIKE '%')))
-        ///  order by TYP
-        public async Task<List<R_INIT>> GetInitialisierungen(string anwekennung, string sectyp, string ininame)
+        /// ergibt Liste der für diesen User/Maschine/Anwendung/Vorgabe vorhandenen Einträge: Section, Param, Wert
+        /// select distinct Anwendung, Typ, Name, Section from QUSY.RInit RInit
+        ///  where (Anwendung = 'QUVAE')
+        ///    and ((Typ = 'A') 
+        ///     or  ((Typ = 'M') and (Name = '0120')) 
+        ///     or  ((Typ = 'U') and (Name = 'MDAMBACH')) 
+        ///     or  ((Typ = 'V') and (Name LIKE '%')))
+        ///  order by Typ
+        public async Task<List<RInit>> GetInitialisierungen(string anwekennung, string sectyp, string ininame)
         {
             var query = new Query();
             if (sectyp == "M" || sectyp == "U")
             {
-                query.Filter = "ANWENDUNG = @0 and TYP = @1 and NAME = @2";
+                query.Filter = "Anwendung = @0 and Typ = @1 and Name = @2";
                 query.FilterParameters = new object[] { anwekennung, sectyp, ininame };
             }
             else
             {
-                query.Filter = "ANWENDUNG = @0 and TYP = @1";
+                query.Filter = "Anwendung = @0 and Typ = @1";
                 query.FilterParameters = new object[] { anwekennung, sectyp };
             }
-            query.OrderBy = "SECTION, INIT_ID";
-            var items = QueryableFromQuery<R_INIT>(query, AppCtx().R_INIT);
+            query.OrderBy = "Section, INIT_ID";
+            var items = QueryableFromQuery<RInit>(query, AppCtx().RInit);
             return await items.ToListAsync();
         }
 
         /// <summary>
         /// Speziel für Werkparameter: Eine Section einer Anwendung
         /// </summary>
-        public async Task<List<R_INIT>> GetAnweSection(string anwekennung, string section)
+        public async Task<List<RInit>> GetAnweSection(string anwekennung, string section)
         {
             var sectyp = "A";  //nur Typ=Anwendung
             var query = new Query
             {
-                Filter = "ANWENDUNG = @0 and TYP = @1 and SECTION = @2",
+                Filter = "Anwendung = @0 and Typ = @1 and Section = @2",
                 FilterParameters = new object[] { anwekennung, sectyp, section },
                 OrderBy = "INIT_ID"
             };
-            var items = QueryableFromQuery<R_INIT>(query, AppCtx().R_INIT);
+            var items = QueryableFromQuery<RInit>(query, AppCtx().RInit);
             return await items.ToListAsync();
         }
 
@@ -95,20 +95,20 @@ namespace DpeZak.Services.Kmp
         /// Insert oder Update ein Ini Eintrag
         /// </summary>
         /// <param name="ini"></param>
-        public async Task SaveInitialisierungen(R_INIT ini)
+        public async Task SaveInitialisierungen(RInit ini)
         {
             var query = new Query();
-            if (ini.TYP == "M" || ini.TYP == "U")
+            if (ini.Typ == "M" || ini.Typ == "U")
             {
-                query.Filter = "ANWENDUNG = @0 and TYP = @1 and NAME = @2 and SECTION = @3 and PARAM = @4";
-                query.FilterParameters = new object[] { ini.ANWENDUNG, ini.TYP, ini.NAME, ini.SECTION, ini.PARAM };
+                query.Filter = "Anwendung = @0 and Typ = @1 and Name = @2 and Section = @3 and Param = @4";
+                query.FilterParameters = new object[] { ini.Anwendung, ini.Typ, ini.Name, ini.Section, ini.Param };
             }
             else
             {
-                query.Filter = "ANWENDUNG = @0 and TYP = @1 and SECTION = @2 and PARAM = @3";
-                query.FilterParameters = new object[] { ini.ANWENDUNG, ini.TYP, ini.SECTION, ini.PARAM };
+                query.Filter = "Anwendung = @0 and Typ = @1 and Section = @2 and Param = @3";
+                query.FilterParameters = new object[] { ini.Anwendung, ini.Typ, ini.Section, ini.Param };
             }
-            var item = await EntityFirst<R_INIT>(query);
+            var item = await EntityFirst<RInit>(query);
 
             if (item == null)
             {
@@ -118,7 +118,7 @@ namespace DpeZak.Services.Kmp
             else
             {
                 //ändern
-                item.WERT = ini.WERT;
+                item.Wert = ini.Wert;
                 //await EntityUpdate(item);  //25.09.23 war ini
                 await EntitySave();  //25.09.23 nur savechanges
             }
